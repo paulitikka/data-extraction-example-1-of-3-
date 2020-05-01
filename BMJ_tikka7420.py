@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 23 14:16:40 2020
+Created on Thu Jan 23 14:16:40 2016
 
 @author: pauli
 """
 # Task 1.
 
 # Extract the following journal peer review data for each (available) article from 
-# BMJ, PLOS Medicine, and BMC between January 15 2020 and January 14 2020, and use also google searches: 
+# BMJ, PLOS Medicine, and BMC between January 15 2016 and January 14 2016, and use also google searches: 
 
 #(1) The quality of preventive care for pre-school aged children in Australian general practice
 #(2) Louise K. Willes
-#(3) 6.12.2020
+#(3) 6.12.2016
 #(4) 3 reviewers
 #(5) Dagmar Haller 
 #(6) (366 words), 
@@ -50,13 +50,13 @@ import string
 #%%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
-#%PLOS is missing quite many peer reviews (only 27 in 2020, so we need)
+#%PLOS is missing quite many peer reviews (only 27 in 2016, so we need)
 #jan='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i01#Research_Article'
 
 #%Let's try to get the first pdf automatically for BMJ, or use the below?, use the below if you can:
-#utest='https://www.bmj.com/archive/online/2020'
+#utest='https://www.bmj.com/archive/online/2016'
 #I need a list of the kind:
-u1='https://www.bmj.com/archive/online/2020/'
+u1='https://www.bmj.com/archive/online/2016/'
 #%% Rist I ghought to enter some of the link data manually:
 #lista=['01-01','01-08','01-15','01-22',
 #       '01-29','02-05','02-12','02-19',
@@ -94,7 +94,7 @@ for i in range(len(ax)):
     utot.append(u1+ax[i])
 #%Should ax have less values than needed:
 #https://stackoverflow.com/questions/21939652/insert-at-first-position-of-a-list-in-python
-#utot.insert(0,'https://www.bmj.com/archive/online/2020/12-31')    
+#utot.insert(0,'https://www.bmj.com/archive/online/2016/12-31')    
 soupn=[]
 responsen=[]
 one_a_tagn=[]
@@ -120,8 +120,8 @@ popia=list(set(test_list).difference(nn))
 utot2=np.delete(utot, popia).tolist()
 #%For saving and loading:
 utot22=pd.DataFrame(utot2)
-utot22.to_csv('weekly_bmj2020_links_tikka7420.csv')
-#utot2=pd.read_csv("weekly_bmj2020_links_tikka7420.csv")
+utot22.to_csv('weekly_bmj2016_links_tikka7420.csv')
+#utot2=pd.read_csv("weekly_bmj2016_links_tikka7420.csv")
 #utot2=list(utot2.ix[:,1])
 #%Ok so far..
 ##Crucial info:    
@@ -201,27 +201,27 @@ for i in range(len(tot)):
     total.append([x for x in tot[i] if str(x) != 'nan'])    
 #%For saving and loading
 dates=pd.DataFrame(alle)
-dates.to_csv('all_dates_2020_27420.csv')
+dates.to_csv('all_dates_2016_27420.csv')
 #%Should you need to load:
-#dates=pd.read_csv("all_dates_2020_27420.csv")
+#dates=pd.read_csv("all_dates_2016_27420.csv")
 #dates=list(dates.ix[:,1]) #or see above
 #%For saving and loading:
 linksa=pd.DataFrame(links)
-linksa.to_csv('all_links_2020_27420.csv')
+linksa.to_csv('all_links_2016_27420.csv')
 #%Should you need to load:
-#links=pd.read_csv("all_links_2020_27420.csv")
+#links=pd.read_csv("all_links_2016_27420.csv")
 #links=list(links.ix[:,1]) #or see above
 #%Saving
 namesa=pd.DataFrame(names)
-namesa.to_csv('all_names_2020_27420.csv')
-#namesa=pd.read_csv("all_names_2020_27420.csv")
+namesa.to_csv('all_names_2016_27420.csv')
+#namesa=pd.read_csv("all_names_2016_27420.csv")
 #names=list(namesa.ix[:,1]) #or see above
 #%The names of the articles:
 totali=pd.DataFrame(total)
-totali.to_csv('all_total_BMJ_links_2020_24420.csv')
+totali.to_csv('all_total_BMJ_links_2016_24420.csv')
 #%Should you need to load:
 #total=[]
-#total=pd.read_csv("all_total_BMJ_links_2020_24420.csv")
+#total=pd.read_csv("all_total_BMJ_links_2016_24420.csv")
 ##%You need to do this, if you want to load as a list again:
 #total=total.ix[:,1:]
 #total=total.values.tolist()
@@ -229,7 +229,7 @@ totali.to_csv('all_total_BMJ_links_2020_24420.csv')
 #for i in range(len(total)): 
 #    taxi.append([x for x in total[i] if x == x])
 #total=taxi 
-#%I am guess that I need similarly 'too loops' to get this solved.
+#%%I am guess that I need similarly 'too loops' to get this solved.
 #The first:
 def peer_loop(total):
     #%
@@ -293,7 +293,7 @@ def peer_loop(total):
         pura.append(cura)
     #%
     return pura
-#%Peer loop for the peer pdf:
+#%%Peer loop for the peer pdf:
 def peer_loop2(total):
     #%
     n=0
@@ -303,15 +303,14 @@ def peer_loop2(total):
     for n in range(len(spana3)):
         ag2=[]
         driver.get(spana3[n])         
-        if driver.find_elements_by_xpath("//a[@title='Article Tab - Peer review']")[0].text=='Peer review'\
-            or driver.find_elements_by_xpath("//a[@title='Article Tab - Peer review']")=='Peer review':
-            
+        if driver.find_elements_by_xpath("//a[@title='Article Tab - Peer review']")[0].text=='Peer review' or driver.find_elements_by_xpath("//a[@title='Article Tab - Peer review']")=='Peer review':
             ag2=spana3[n]+'/peer-review'
             driver.get(ag2) 
             #%
             if driver.find_elements_by_xpath("//div[@class='pane-content']/div[@id='no-peer-review']")==[]:
             #This is not completely intuitive..:
                 if len(driver.find_elements_by_xpath("//div[@class='peer-list']/ul"))>=3:
+                    ok.append(driver.find_elements_by_xpath("//div[@class='peer-list']/ul")[2].find_element_by_css_selector('a').get_attribute('href'))
                 else:
                     ok.append([])
             else:
@@ -320,7 +319,7 @@ def peer_loop2(total):
             ok.append([])
             #%this is the peer review pdf..
     return ok
-#%test..
+#%%test..
 #nix=[]
 #for i in range(0,4):
 #    nix.append(peer_loop2(total[i]))     
@@ -335,12 +334,12 @@ ttn=[]
 for i in range(len(tn)): 
     for j in range(len(tn[i])):
         tn[i][j]=', '.join(tn[i][j])
- #%   
+ #%  
 #tna=pd.DataFrame(tn)
-#tna.to_csv('writers_BMJ_2020_24420.csv')
+#tna.to_csv('writers_BMJ_2016_24420.csv')
 #%Should you need to load:
 #tn=[]
-#tn=pd.read_csv("writers_BMJ_2020_24420.csv")
+#tn=pd.read_csv("writers_BMJ_2016_24420.csv")
 ##%You need to do this, if you want to load as a list again:
 #tn=tn.ix[:,1:]
 #tn=tn.values.tolist()
@@ -357,9 +356,9 @@ for i in range(len(total)):
 #tnn=pd.DataFrame(tn1)
 #tnn.to_csv('all_total_names_20320_v2.csv')
 #tn2=pd.DataFrame(tn1)
-#tn2.to_csv('all_total_pdf_links_2020_28220.csv')  
+#tn2.to_csv('all_total_pdf_links_2016_28220.csv')  
 #%
-#%tn1=pd.read_csv("all_total_pdf_links_2020_28220.csv")
+#%tn1=pd.read_csv("all_total_pdf_links_2016_28220.csv")
 #tn1=list(tn1.ix[:,1]) #or see above
 #%Now I need to gather the data for each article (one row):
 part_list=[]
@@ -374,7 +373,7 @@ for i in range(len(total)):
 #https://www.journaldev.com/23674/python-remove-character-from-string
 #%And then all the weeks would be something like: for loading and saving:
 tnx=pd.DataFrame(part_list)
-tnx.to_csv('all_categores_2020_29420_v1.csv')
+tnx.to_csv('all_categores_2016_1520_v1.csv')
 #%%https://stackoverflow.com/questions/26666919/add-column-in-dataframe-from-list/38490727       
 dt=pd.concat([pd.DataFrame(part_list[i][0], columns=['Writers of Article']) for i in range(17)], ignore_index=True)
 #%dt=dt.drop([3, 4]) #if something is not ok
@@ -405,10 +404,10 @@ tot_list['Link to PDF of Review'] = dt4
 final_matrix=tot_list
 #%For saving and loading:
 tnp=pd.DataFrame(tot_list)
-tnp.to_csv('all_for_bmj_review2020_20320tikka.csv')
+tnp.to_csv('all_for_bmj_review2016_20320tikka.csv')
 ##%%
 #final_matrix=[]
-#final_matrix=pd.read_csv("all_for_bmj_review2020_20320tikka.csv")
+#final_matrix=pd.read_csv("all_for_bmj_review2016_20320tikka.csv")
 #final_matrix=final_matrix.ix[:,1:]
 
 #%%Here is how you get the data from pdf:
@@ -425,12 +424,12 @@ for i in range(len(final_matrix)):
         url=str(final_matrix['Link to PDF of Review'][i])
         x=str(list(final_matrix.index)[i])
         xa.append(x)
-        urllib.request.urlretrieve(url, filename='C:\\python\\BMJ2020\\'+x+'peer.pdf') #check..
+        urllib.request.urlretrieve(url, filename='C:\\python\\BMJ2016\\'+x+'peer.pdf') #check..
     else:
         pass
 #Then convert the files to word e.g. with WPS PDF to Word program
 #%%Now I need to do I loop for all files, and save the results
-directory="C:\python\BMJ2020\*.docx"
+directory="C:\python\BMJ2016\*.docx"
 import glob
 
 dataframes = []
@@ -495,10 +494,10 @@ for i in range(len(df_tot)):
     dtok.append(df_tot[i].loc[:,0])          
 #%For saving and loading:
 dtok2=pd.DataFrame(dtok)
-dtok2.to_csv('essential_for_bmj_2020_review_25320tikka.csv')
+dtok2.to_csv('essential_for_bmj_2016_review_25320tikka.csv')
 #%
 #dtok=[]
-#dtok=pd.read_csv("essential_for_bmj_2020_review_25320tikka.csv")
+#dtok=pd.read_csv("essential_for_bmj_2016_review_25320tikka.csv")
 #dtok=dtok.ix[:,1:]  
 #%Make the list of list a list of panda dataframes:
 #total=dtok.ix[:,1:]
@@ -812,10 +811,10 @@ test_short2=[]
 test_short2=test_short  
 #% 
 tnan=pd.DataFrame(test_short2)
-tnan.to_csv('half of the info_BMJ_2020_24420.csv')
+tnan.to_csv('half of the info_BMJ_2016_24420.csv')
 #%Should you need to load:
 #tnan=[]
-#tnan=pd.read_csv("test_short2_BMJ_2020_24420.csv")
+#tnan=pd.read_csv("test_short2_BMJ_2016_24420.csv")
 #%You need to do this, if you want to load as a list again:
 #tnan=tn.ix[:,1:]
 #tnan=tn.values.tolist()
@@ -824,14 +823,14 @@ tnan.to_csv('half of the info_BMJ_2020_24420.csv')
 #    taxi.append([x for x in tnan[i] if x == x])
 #tnan=taxi
 #test_short2=tnan 
-#%It was tuple list, so now I convert it to list of lists:
+#%%It was tuple list, so now I convert it to list of lists:
 #https://stackoverflow.com/questions/16730339/python-add-item-to-the-tuple
 tt=[]
 for i in range(len(test_short2)):
     tt.append(list(test_short2[i]))
 #%
 ttax=pd.DataFrame(tt)
-ttax.to_csv('half of the infoos_BMJ_2020_24420.csv')    
+ttax.to_csv('half of the infoos_BMJ_2016_24420.csv')    
 #%   
 def panda(a):   
     panda1=[]
@@ -878,7 +877,7 @@ for i in range(len(final_matrix)):
             result['Writers of Article'].iloc[j]=final_matrix['Writers of Article'].iloc[i]
             result['Date of Publication'].iloc[j]=final_matrix['Date of Publication'].iloc[i]
             result['Link to Publication'].iloc[j]=final_matrix['Link to Publication'].iloc[i]
-#%%This xa maybe excessive..
+#%This xa maybe excessive..
 for i in range(len(xa)):
     for j in range(len(result)):
         if int(xa[i]) ==result['Designation'].iloc[j]:
@@ -905,8 +904,8 @@ resulta=['Journal Name','Title of Article', \
                'Link to All Reviews',
                'Link to PDF of Review']
 df = result[resulta]        
-#%%If something too much or little, you man need to have more here..
+#%If something too much or little, you man need to have more here..
 #df=df.iloc[0:493,:]
             #%
 dtokz=pd.DataFrame(df)
-dtokz.to_csv('bmj_reviews2020_29420tikka.csv',index=False)
+dtokz.to_csv('bmj_reviews2016_29420tikka.csv',index=False)
