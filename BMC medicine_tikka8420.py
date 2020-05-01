@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed 4 29 13:00
+Created on Thu Jan 23 14:16:40 2019
 
 @author: pauli
 """
 # Task 1.
 
 # Extract the following journal peer review data for each (available) article from 
-# BMJ, PLOS Medicine, and BMC between January 15 2019 and January 14 2020, and use also google searches: 
+# BMJ, PLOS Medicine, and BMC between January 15 2019 and January 14 2019, and use also google searches: 
 
 #(1) The quality of preventive care for pre-school aged children in Australian general practice
 #(2) Louise K. Willes
@@ -46,16 +46,16 @@ from selenium.webdriver.common.by import By
 #%%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
-#For 2020..   (check th number of these..) 
-urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=18&searchType=&tab=keyword'
-urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=2'
-#urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=3'
-#urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=4'
-#urln_all5='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=5'
+#For 2019..   (check th number of these..) 
+urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=17&searchType=&tab=keyword'
+urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=17&page=2'
+urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=17&page=3'
+urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=17&page=4'
+urln_all5='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=17&page=5'
 #urln_all6='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=13&page=6'
 #urln_all7='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=13&page=7'
 #%Here all combined..
-utot=[urln_all, urln_all2]#, urln_all3, urln_all4, urln_all5]#, urln_all6, urln_all7]
+utot=[urln_all, urln_all2, urln_all3, urln_all4, urln_all5]#, urln_all6, urln_all7]
 soupn=[]
 responsen=[]
 one_a_tagn=[]
@@ -211,7 +211,7 @@ auxif2=pd.concat(auxif, axis=1)
 #da_au=[]
 #da_au=pd.read_csv("dates and authors_BMC2019_tikka15420.csv")
 #da_au=da_au.iloc[:,1:4] #there was an extrac column
-#%This loop seem to be working below (24.1.2020), This takes 10 min, before enter, check if you already have what you need
+#%This loop seem to be working below (24.1.2019), This takes 10 min, before enter, check if you already have what you need
 tinka=[]
 linkaas=[]
 indaas=[]
@@ -319,18 +319,18 @@ for i in range(len(naps1)):
             naps11.append([naps1[i].iloc[j], list(v1_ok)[i]])
         else:
             pass
-naps_tot=naps00+naps11
-#%This is one of the time consuming internet extraction steps that needs to be done separately:
+naps_tot=naps00+naps11 #test naps_tot for the next file name..
+#%%This is one of the time consuming internet extraction steps that needs to be done separately:
 #One needs to get the right order of pdfs/words already here, 
 # note the way the pdfs have been named:
-#o=[]
-#i=0
-#for i in range(len(naps_tot)):
-#    o.append(np.str(naps_tot[i][1]))
-#    urllib.request.urlretrieve(naps_tot[i][0], \
-#                               filename='C:\\python\\BMC2020\\' +o[i]+' '+naps_tot[i][0][-37:])  
+o=[]
+i=0
+for i in range(len(naps_tot)):
+    o.append(np.str(naps_tot[i][1]))
+    urllib.request.urlretrieve(naps_tot[i][0], \
+                               filename='C:\\python\\BMC2019\\' +o[i]+' '+naps_tot[i][0][-39:])  
 #https://www.digitalocean.com/community/tutorials/how-to-convert-data-types-in-python-3  
-#%There are two ways to do this. Either converge all the files as one, or import them separately as a big pands frame.
+#%%There are two ways to do this. Either converge all the files as one, or import them separately as a big pands frame.
 # The method one:
 #% Read all files with pdf to word and compress program, e.g.WPS PDF to Word
 #the change the compressed doc to csv:
@@ -345,7 +345,7 @@ naps_tot=naps00+naps11
 #https://www.guru99.com/python-regular-expressions-complete-tutorial.html#3
 #The method two: 
 #%Now I need to do I loop for all files, and save the results
-directory="C:\python\BMC2020\*.docx"
+directory="C:\python\BMC2019\*.docx"
 import glob
 dataframes = []
 all_files2=[]
@@ -613,5 +613,5 @@ tot_counta=['Journal Name','Title of Article', \
                'Link to PDF of Reviewer']
 df = tot_count[tot_counta]
 #%
-df.to_csv('BMC2020_all_available_ok_tikka28420.csv',index=False)
+df.to_csv('BMC2019_all_available_ok_tikka1520.csv',index=False)
 #https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
