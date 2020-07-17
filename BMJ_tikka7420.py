@@ -1,27 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 13 10:16:40 2015
+Created on Thu May 13 10:16:40 2018
 
 @author: pauli
 """
 # Task 1.
 
 # Extract the following journal peer review data for each (available) article from 
-# BMJ, PLOS Medicine, and BMC between January 15 2015 and January 14 2015, and use also google searches: 
-
-#(1) The quality of preventive care for pre-school aged children in Australian general practice
-#(2) Louise K. Willes
-#(3) 6.12.2015
-#(4) 3 reviewers
-#(5) Dagmar Haller 
-#(6) (366 words), 
-#(7a optional) MD PhD, University of Geneva
-#(8) Lena Sanci 
-#(9) (621 words), 
-#(9a optional) Prof., Director, University of Melbourne
-#(10) Lisa Whitehead 
-#(11) (77 words), 
-#(11a optional)Prof., Dean, Edith Cowan University Western Australia
+# BMJ, PLOS Medicine, and BMC between January 15 20XX and January 14 20(XX+1),
 
 #%%
 import requests
@@ -34,7 +20,6 @@ import pandas as pd #for importing files
 import numpy as np  #for calculations, array manipulations, and fun :)
 import matplotlib.pyplot as plt #for scientifical plots
 import os
-
 import datetime
 import time
 from selenium import webdriver  # for webdriver
@@ -47,33 +32,67 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import random
 import string
-#%%https://developers.google.com/edu/python/regular-expressions
+#%Loading list of lists accumulated from previous codings, especially problematic: 'part_list'
+#totala=[]
+#totala=pd.read_csv("all_categores_2018_23620_v1.csv") #this you need to load with tnon, see above
+##%You need to do this, if you want to load as a list again:
+#totala=totala.iloc[:,1:]
+#totala=totala.values.tolist()
+#taxi=[]
+#for i in range(len(totala)): 
+#    taxi.append([x for x in totala[i] if x == x])
+#dtok=[]
+#part_list=taxi 
+#%
+#Or Check tnon below for loading..
+#part_list=[]
+#total=pd.read_csv("all_categores_2018_23620_v1.csv")
+##dates=list(dates.ix[:,1]) #or see above
+##%You need to do this (fore each possibly), 
+## if you want to load as a list again, use similar procedure in sim. cases:
+##total=[]
+#total=total.iloc[:,1:]
+#total=total.values.tolist()
+#tnon=[[] for i in range(50)]
+#for i in range(len(total)):
+#    for j in range(len(total[i])):
+#        if total[i][j]!=[]:
+#            text=[]
+#            text = total[i][j]
+#            text = text.split("', ")
+#            for n in range(len(text)):
+#                text[n]=text[n].replace("[","")
+#                text[n]=text[n].replace("'","")
+#                text[n]=text[n].replace("]","")
+#            tnon[i].append(text)
+###            https://stackoverflow.com/questions/10037742/replace-part-of-a-string-in-python
+###            https://stackoverflow.com/questions/5387208/how-to-convert-a-string-to-a-list-in-python/5387227
+###%e.g. important for loading:
+#part_list=tnon 
+#%More ammends:
+#for i in range(len(part_list)):
+#    if len(part_list[i][1])<len(part_list[i][0]):
+#        part_list[i][1].append(part_list[i][1][0])
+#%And even more, new one:
+#https://stackoverflow.com/questions/19334374/python-converting-a-string-of-numbers-into-a-list-of-int
+#xaa=[int(s) for s in part_list[0][6][0].split(',')]
+#for i in range(len(part_list)):
+#    part_list[i][6]=([int(s) for s in part_list[i][6][0].split(',')])        
+#partlist2=[[] for i in range(49)]
+##partlist2=part_list
+##%%How to resume the list from list of lists (instead of list of strings)
+#for i in range(len(partlist2)):
+#    partlist2[i][5]=tn3[i]
+#part_list=part_list[0:49]  
+#%
+#%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
-#%PLOS is missing quite many peer reviews (only 27 in 2015, so we need)
-#jan='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i01#Research_Article'
-
 #%Let's try to get the first pdf automatically for BMJ, or use the below?, use the below if you can:
-#utest='https://www.bmj.com/archive/online/2015'
+#utest='https://www.bmj.com/archive/online/2018'
 #I need a list of the kind:
-u1='https://www.bmj.com/archive/online/2015/'
-#%% Rist I ghought to enter some of the link data manually:
-#lista=['01-01','01-08','01-15','01-22',
-#       '01-29','02-05','02-12','02-19',
-#       '02-26','03-05','03-12','03-19',
-#       
-#       '03-26','04-02','04-09','04-16','04-23',
-#       '04-30','05-07','05-14','05-21',
-#       '05-28','06-04','06-11','06-18',
-#       
-#       '06-25','07-02','07-09','07-16','07-23',
-#       '07-30','08-06','08-13','08-20',
-#       '08-27','09-09','09-16','09-23','09-30',
-#       
-#       '10-07','10-14','10-21','10-28',
-#       '11-04','11-11','11-18','11-25',
-#       '12-02','12-09','12-16','12-23']
-#%%Or more easily with..
+u1='https://bmj.com/archive/online/2018/'
+#%Or more easily with..
 soupn1=[]
 responsen1=[]
 one_a_tagn1=[]
@@ -89,12 +108,13 @@ for i in range(len(one_a_tagn1)):
 #%Should the ax have values not ok:
 ax=np.delete(ax, [0,1]).tolist()
 ax.sort()
+#%
 utot=[]
 for i in range(len(ax)):
     utot.append(u1+ax[i])
 #%Should ax have less values than needed:
 #https://stackoverflow.com/questions/21939652/insert-at-first-position-of-a-list-in-python
-#utot.insert(0,'https://www.bmj.com/archive/online/2015/12-31')    
+#utot.insert(0,'https://www.bmj.com/archive/online/2018/12-31')    
 soupn=[]
 responsen=[]
 one_a_tagn=[]
@@ -117,11 +137,15 @@ test_list = list(range(0, 52))
 popia=list(set(test_list).difference(nn))
 #%I should find the indeces of the missing four..
 #https://stackoverflow.com/questions/497426/deleting-multiple-elements-from-a-list
-utot2=np.delete(utot, popia).tolist()
+#utot2=np.delete(utot, popia).tolist()
+utot2=list(np.sort(utot)) #2018 required this solution
 #%For saving and loading:
+
 utot22=pd.DataFrame(utot2)
-utot22.to_csv('weekly_bmj2015_links_tikka21520.csv')
-#utot2=pd.read_csv("weekly_bmj2015_links_tikka21520.csv")
+utot22.to_csv('weekly_bmj2018_links_tikka23620.csv')
+#utot2=pd.DataFrame(utot)
+#utot2.to_csv('weekly_bmj2018_links_tikka23620.csv')
+#utot2=pd.read_csv("weekly_bmj2018_links_tikka23620.csv")
 #utot2=list(utot2.ix[:,1])
 #%Ok so far..
 ##Crucial info:    
@@ -133,7 +157,9 @@ options = Options()
 options.add_argument("--headless")
 prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
 options.add_experimental_option("prefs", prefs)
-driver = webdriver.Chrome(executable_path='C:/Users/Pauli/Downloads/chromedriver.exe',options=options)
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
 #%Ok, eli tässä on jo melkein kaikki metadata.. dates:
 def date(url=utot2[0]):
     driver.get(url)
@@ -201,58 +227,24 @@ for i in range(len(tot)):
     total.append([x for x in tot[i] if str(x) != 'nan'])    
 #%For saving and loading
 datesa=pd.DataFrame(dates)
-datesa.to_csv('all_dates_2015_21520.csv')
+datesa.to_csv('all_dates_2018_23620.csv')
 ##%Should you need to load:
-#dates=pd.read_csv("all_dates_2015_27420.csv")
-#links=pd.read_csv("all_links_2015_27420.csv")
-#namesa=pd.read_csv("all_names_2015_27420.csv")
-#total=pd.read_csv("all_total_BMJ_links_2015_22520.csv")
-#dates=list(dates.ix[:,1]) #or see above
-#%%You need to do this (fore each possibly), 
-# if you want to load as a list again, use similar procedure in sim. cases:
-total=[]
-total=totala.iloc[:,1:]
-total=total.values.tolist()
-tnon=[[] for i in range(50)]
-for i in range(len(total)):
-    for j in range(len(total[i])):
-        if total[i][j]!=[]:
-            text=[]
-            text = total[i][j]
-            text = text.split("', ")
-            for n in range(len(text)):
-                text[n]=text[n].replace("[","")
-                text[n]=text[n].replace("'","")
-                text[n]=text[n].replace("]","")
-            tnon[i].append(text)
-#            https://stackoverflow.com/questions/10037742/replace-part-of-a-string-in-python
-#            https://stackoverflow.com/questions/5387208/how-to-convert-a-string-to-a-list-in-python/5387227
-#%e.g. important for loading:
-part_list=tnon            
-            #%%
-#tnaa=[]        
-#for i in range(len(tnon)):
-#    tnaa.append(tnon[i][0])
-    #%this is minimum:       
-#total=total.values.tolist()
-#total=total.iloc[:,1:] #this is not necessarily needed
-#taxi=[]
-#for i in range(len(total)): 
-#    taxi.append([x for x in total[i] if x == x])
-#total=taxi 
+#dates=pd.read_csv("all_dates_2018_27420.csv")
+#links=pd.read_csv("all_links_2018_27420.csv")
+#namesa=pd.read_csv("all_names_2018_27420.csv")
 # these files are either at: C:\Users\pauli or C:\python
 #%For saving and loading:
 linksa=pd.DataFrame(links)
-linksa.to_csv('all_links_2015_21520.csv')
+linksa.to_csv('all_links_2018_23620.csv')
 #%Should you need to load:
 #links=list(links.ix[:,1]) #or see above
 #%Saving
 namesa=pd.DataFrame(names)
-namesa.to_csv('all_names_2015_21520.csv')
+namesa.to_csv('all_names_2018_23620.csv')
 #names=list(namesa.ix[:,1]) #or see above
 #%The names of the articles:
 totali=pd.DataFrame(total)
-totali.to_csv('all_total_BMJ_links_2015_22520.csv')
+totali.to_csv('all_total_BMJ_links_2018_23620.csv')
 #%I am guess that I need similarly 'too loops' to get this solved.
 #The first:
 def peer_loop(total):
@@ -260,7 +252,6 @@ def peer_loop(total):
     n=0
     spana3=[]
     spana3=total
-#    all_spans4=[]
     pura=[]
     for i in range(len(spana3)):
         res = requests.get(spana3[i])
@@ -306,8 +297,6 @@ def peer_loop(total):
                     nop.append(i)
             if nop!=[]:
                 cura=cura[0:nop[0]]
-        #    elif nop==[]:
-        #        cura=cura[0:noo[0]]
             else:
                 cura=cura[0:-1]
                 
@@ -317,7 +306,8 @@ def peer_loop(total):
             cura=cura[::2]
             pura.append(cura)
         else:
-            pura('nan')
+            pass
+#            pura('nan')
     #%
     return pura
 #%Peer loop for the peer pdf:
@@ -348,7 +338,6 @@ def peer_loop3(total2):
     soup=[]
     link=[]
     for n in range(len(spana3)):
-#        while urllib.request.urlopen(spana3[n]):
             #                https://docs.python.org/3/tutorial/errors.html
             try:
                 resp = urllib.request.urlopen(spana3[n])
@@ -380,14 +369,11 @@ def peer_loop3(total2):
                        pdf.append([])
                 else:
                    pdf.append([])
-            except HTTPError:
+            except:
                 pdf.append([])
 #                https://docs.python.org/3/tutorial/errors.html
             else:
                 pdf.append([])
-#            for i in range(len(alepa)): #this is a mystery line..
-#                if pdf[]
-                
 #https://www.tutorialspoint.com/How-to-check-if-multiple-strings-exist-in-another-string-in-Python
             #%this is the peer review pdf..
     return pdf
@@ -404,17 +390,8 @@ for i in range(len(tn)):
         tn[i][j]=', '.join(tn[i][j])
  #%
 tna=pd.DataFrame(tn)
-tna.to_csv('writers_BMJ_2015_18520.csv')
-#%Should you need to load:
-#tn=[]
-#tn=pd.read_csv("writers_BMJ_2015_18520.csv")
-##%You need to do this, if you want to load as a list again:
-#tn=tn.iloc[:,1:]
-#tn=tn.values.tolist()
-#taxi=[]
-#for i in range(len(tn)): 
-#    taxi.append([x for x in tn[i] if x == x])
-#tn=taxi 
+tna.to_csv('writers_BMJ_2018_23620.csv')
+
 #%Depending what form you get the data saved, you may need something like the above to load it (i.e. tnon)..
 #%These loops are relatively time consuming (tn, and tn1, around 15min/each so better save..)
 tn1=[]
@@ -424,17 +401,9 @@ for i in range(len(total2)):
     
 #%Again for loading and saving:
 tnn=pd.DataFrame(tn1)
-tnn.to_csv('all_total_pdf_links_2015_21520.csv')
+tnn.to_csv('all_total_pdf_links_2018_23620.csv')
 #%tn2=pd.DataFrame(tn1)
-#tn2.to_csv('all_total_pdf_links_2015_28220.csv')  
-#tn1=[]
-#tn1=pd.read_csv("all_total_pdf_links_2015_21520.csv")
-#tn1=tn1.iloc[:,1:]
-#tn1=tn1.values.tolist()
-#taxi=[]
-#for i in range(len(tn1)): 
-#    taxi.append([x for x in tn1[i] if x == x])
-#tn1=taxi 
+#tn2.to_csv('all_total_pdf_links_2018_23620.csv')   
 tn3=[]
 for i in range(len(tn1)):
      tn3.append(tn1[i][::2])
@@ -445,21 +414,11 @@ for i in range(len(tn3)):
 #%
 #%Again for loading and saving:
 tnn=pd.DataFrame(tn3)
-tnn.to_csv('all_totalok_pdf_links_2015_22520.csv')
-#%tn2=pd.DataFrame(tn1)
-#tn2.to_csv('all_total_pdf_links_2015_28220.csv')  
-#%
-#tn1=[]
-#tn1=pd.read_csv("all_totalok_pdf_links_2015_14520.csv")
-#tn1=tn1.ix[:,1:]
-#tn1=tn1.values.tolist()
-#taxi=[]
-#for i in range(len(tn1)): 
-#    taxi.append([x for x in tn1[i] if x == x])
-#tn3=taxi     
+tnn.to_csv('all_totalok_pdf_links_2018_23620.csv')    
    #%Calculating the number of pages in the pdf.. needed?
+   #Check the ranges, also for the part list
 import PyPDF2, io, requests
-page_count=[[] for i in range(50)]
+page_count=[[] for i in range(len(tn3))]
 for i in range(len(tn3)):
     for j in range(len(tn3[i])):
         if tn3[i][j]!='nan':
@@ -475,15 +434,7 @@ for i in range(len(tn3)):
             page_count[i].append(0)
 #%Again for loading and saving:
 tnz=pd.DataFrame(page_count)
-tnz.to_csv('page_count_2015_22520.csv')
-#%tnz=[]
-#tnz=pd.read_csv("page_count_2015_19520.csv")
-#tnz=tnz.ix[:,1:]
-#tnz=tnz.values.tolist()
-#taxi=[]
-#for i in range(len(tnz)): 
-#    taxi.append([x for x in tnz[i] if x == x])
-#page_count=taxi    
+tnz.to_csv('page_count_2018_23620.csv')
 #%Now I need to gather the data for each article (one row):
 part_list=[]
 #%Some info:
@@ -497,64 +448,29 @@ for i in range(len(total)):
 #%I/we may need to do a 20 page +if there is a writers name in the review cut of code..(12.5.20)
 #%And then all the weeks would be something like: for loading and saving:
 tnx=pd.DataFrame(part_list)
-tnx.to_csv('all_categores_2015_23520_v1.csv') #ok at the moment (13.5.20)
-#%%
-totala=[]
-totala=pd.read_csv("all_categores_2015_23520_v1.csv") #this you need to load with tnon, see above
-#%
-##%You need to do this, if you want to load as a list again:
-#totala=totala.iloc[:,1:]
-#totala=totala.values.tolist()
-#taxi=[]
-#for i in range(len(totala)): 
-#    taxi.append([x for x in totala[i] if x == x])
-#part_list=[]
-#part_list=taxi 
-#%
-#Check tnon above for loading..
-#part_list=[]
-#part_list=tnon  ...
-#%More ammends:
-#for i in range(len(part_list)):
-#    if len(part_list[i][1])<len(part_list[i][0]):
-#        part_list[i][1].append(part_list[i][1][0])
-
-#%%And even more, new one:
-#https://stackoverflow.com/questions/19334374/python-converting-a-string-of-numbers-into-a-list-of-int
-#xaa=[int(s) for s in part_list[0][6][0].split(',')]
-for i in range(len(part_list)):
-    part_list[i][6]=([int(s) for s in part_list[i][6][0].split(',')])        
-#%
-#partlist2=[[] for i in range(49)]
-##partlist2=part_list
-##%%How to resume the list from list of lists (instead of list of strings)
-#check tnon above
-#%
-#for i in range(len(partlist2)):
-#    partlist2[i][5]=tn3[i]
-#part_list=part_list[0:49] 
-#%%https://stackoverflow.com/questions/26666919/add-column-in-dataframe-from-list/38490727      
+tnx.to_csv('all_categores_2018_23620_v1.csv') #ok at the moment (13.5.20)
+#%https://stackoverflow.com/questions/26666919/add-column-in-dataframe-from-list/38490727      
 #CHECK the RANGE, e.g. 49,50,51, 21? 
 dt=[]
-dt=pd.concat([pd.DataFrame(part_list[i][0], columns=['Writers of Article']) for i in range(21)], ignore_index=True)
+dt=pd.concat([pd.DataFrame(part_list[i][0], columns=['Writers of Article']) for i in range(len(total))], ignore_index=True)
 #If you load part_list, you need the brackets []
 #%dt=dt.drop([3, 4]) #if something is not ok
 #dt=dt.reset_index(drop=True)
 #%Part list may require [] brackests if it is just one string variable
 dt1=[]
 dt1=pd.concat([pd.DataFrame(part_list[i][1], columns=['Date of Publication'])\
-               for i in range(21)], ignore_index=True)
+               for i in range(len(total))], ignore_index=True)
 dt2=[]
 dt2=pd.concat([pd.DataFrame(part_list[i][2], columns=['Title of Article'])\
-               for i in range(21)], ignore_index=True)
+               for i in range(len(total))], ignore_index=True)
 dt3=[]
-dt3=pd.concat([pd.DataFrame(part_list[i][3], columns=['Link to Publication']) for i in range(21)], ignore_index=True)
+dt3=pd.concat([pd.DataFrame(part_list[i][3], columns=['Link to Publication']) for i in range(len(total))], ignore_index=True)
 dt33=[]
-dt33=pd.concat([pd.DataFrame(part_list[i][4], columns=['Link to All Reviews']) for i in range(21)], ignore_index=True)
+dt33=pd.concat([pd.DataFrame(part_list[i][4], columns=['Link to All Reviews']) for i in range(len(total))], ignore_index=True)
 dt4=[]
-dt4=pd.concat([pd.DataFrame(part_list[i][5], columns=['Link to PDF of Review']) for i in range(21)], ignore_index=True)
+dt4=pd.concat([pd.DataFrame(part_list[i][5], columns=['Link to PDF of Review']) for i in range(len(total))], ignore_index=True)
 dt5=[]
-dt5=pd.concat([pd.DataFrame(part_list[i][6], columns=['Page Count']) for i in range(21)], ignore_index=True)
+dt5=pd.concat([pd.DataFrame(part_list[i][6], columns=['Page Count']) for i in range(len(total))], ignore_index=True)
 
 #%Check the range
 tot_list=[]
@@ -580,37 +496,36 @@ final_matrix=final_matrix[final_matrix['Page Count'] !=0]
 
 #%For saving and loading:
 #tnp=pd.DataFrame(final_matrix)
-#tnp.to_csv('all_for_bmj_review2015_26520tikka.csv') #one needs to be carefull with these dates when loading
+#tnp.to_csv('all_for_bmj_review2018_26520tikka.csv') #one needs to be carefull with these dates when loading
 #%For loading:
 #final_matrix=[]
-#final_matrix=pd.read_csv("all_for_bmj_review2015_25520tikka.csv")
+#final_matrix=pd.read_csv("all_for_bmj_review2018_25520tikka.csv")
 #final_matrix=final_matrix.ix[:,1:]
-#%
 #final_matrix=final_matrix[final_matrix['Link to PDF of Review'] != 'nan']
 #final_matrix=final_matrix[final_matrix['Page Count'] < 23]
-#%%Here is how you get the data from pdf:
+#%Here is how you get the data from pdf:
 #https://stackoverflow.com/questions/45470964/python-extracting-text-from-webpage-pdf
 #% This is how you import the pdfs from links:
 #https://stackoverflow.com/questions/34503412/download-and-save-pdf-file-with-python-requests-module
 #https://www.geeksforgeeks.org/how-to-get-rows-index-names-in-pandas-dataframe/    
-import urllib.request
-global str
+#import urllib.request
+#global str
 #del str #do not use str as a name of a variable of function
-#https://stackoverflow.com/questions/6039605/typeerror-str-object-is-not-callable-python
-url=[]
+#%https://stackoverflow.com/questions/6039605/typeerror-str-object-is-not-callable-python
+#url=[]
 x=[]
 xa=[]
 xu=[]
 for i in range(len(final_matrix)):
 #    if final_matrix['Link to PDF of Review'][i] !='nan': #If you have removed nans etc., you do not need this
-    url=final_matrix['Link to PDF of Review'][list(final_matrix.index)[i]] #note the index is not i, but list..
+#    url=final_matrix['Link to PDF of Review'][list(final_matrix.index)[i]] #note the index is not i, but list..
     x=list(final_matrix.index)[i]
     xu=str(x)
     xa.append(x)
-    urllib.request.urlretrieve(url, filename='C:\\python\\BMJ2015\\'+xu+'peer.pdf') #check..
+#    urllib.request.urlretrieve(url, filename='C:\\python\\BMJ2018\\'+xu+'peer.pdf') #check..
 
-#%%Now I need to do I loop for all files, and save the results
-directory="C:\python\BMJ2015\*.docx"
+#%Now I need to do I loop for all files, and save the results
+directory="C:\python\BMJ2018\*.docx"
 import glob
 
 dataframes = []
@@ -651,7 +566,9 @@ def totis(x=all_files2[22]):    #check the length of all_files2 before giving va
 df_tot=[]
 for i in range(len(all_files2)):
     df_tot.append(totis(x=all_files2[i]))
-
+#%You may need to manually delet an index for 2018:
+#df_tot.index=..click..[57]
+#%
 #%With this you get the extra columns away by joining the cells that do that
 # #https://stackoverflow.com/questions/10880813/typeerror-sequence-item-0-expected-string-int-found
 #%Now you just need the first column from every dataframe
@@ -659,34 +576,26 @@ dtok=[]
 for i in range(len(df_tot)):
     dtok.append(df_tot[i].loc[:,0])          
 #%For saving and loading:
+    #%
 #dtok2=pd.DataFrame(dtok)
-#dtok2.to_csv('essential_for_bmj_2015_review_26520tikka.csv') #it is better to start here than partlist, 
-#if your word count function needs modification due data 
+#dtok2.to_csv('essential_for_bmj_2018_review_23620tikka.csv') #it is better to start here than partlist, 
+#if your word count function needs modification due data: 
+    #%
+#l=[]
+#for i in range(len(desig)):
+#    if int(desig[i][1])==20:
+#        l.append([i,desig[i][1]])
+##        #%%
+##        Godfrey P. Oakley, Jr. 
 #%
-#dtok=[]
-#dtok=pd.read_csv("essential_for_bmj_2015_review_25320tikka.csv")
-#dtok=dtok.ix[:,1:]  
-##%Make the list of list a list of panda dataframes:
-#total=dtok.ix[:,1:]
-#total=total.values.tolist()
-#taxi=[]
-#for i in range(len(total)): 
-#    taxi.append([x for x in total[i] if x == x])
-#    #%
-#maxi=[]
-#for i in range(len(taxi)):
-#    maxi.append(pd.DataFrame(taxi[i]))
-#mazi=[]
-#for i in range(len(taxi)):
-#    mazi.append(maxi[i][0])
-#dtok=mazi
-    #%%
-l=[]
-for i in range(len(desig)):
-    if int(desig[i][1])==138:
-        l.append([i,desig[i][1]])
+#l=[]
+#for i in range(len(dtok)):
+#    for j in range(len(dtok[i])):
+#        if "Monica Bertoia" in dtok[i][j]:
+#            l.append(i)
+#            print(i)
 #%%Once you have the dataframe well extracted, the below function it should work:
-#Check the BMJ extras file (25.5.2015) for testing if needed
+#Check the BMJ extras file (25.5.2018) for testing if needed
 def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is the variable
     #%Check the short reviews (Tikka 21520)
     start=[]
@@ -709,11 +618,12 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     ssa=[]
     ssn=[]
     Article=[]
-#    dx=dtok[31]
-#    xx=int(desig[31][1])
+#    dx=dtok[120]
+#    xx=int(desig[120][1])
     nana=[]
     panaa=[]
     separate=[]
+#    oh=[]
     email=['Please see the reviewer\'s report', 'Please see the attahcment',\
            'Please see the attachment',\
            'My comments are in a separate file','my report is added as a word document',\
@@ -728,11 +638,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         match2na= bool(re.search(r'Comments from Reviewers', stra))
         
         #I need to change these values..
-#        match2a = bool(re.search(r'Detailed comments', stra)) #I need to change these values..
+        match2a = bool(re.search(r'Detailed comments from the meeting:', stra)) #I need to change these values..
         match2b = bool(re.search(r'Our statistician made the following comments', stra)) 
-        match2c = bool(re.search(r'Reviewer', stra)) #I need to change these values..
-        
-        
+        match2c = bool(re.search(r'Reviewer', stra)) #I need to change these values..  
         match3  = bool(re.search(r'Additional Questions:', stra))
         match4  = bool(re.search(r'Please enter your name:', stra))
         mx4a   = bool(re.search(r'Institution: ', stra))
@@ -761,7 +669,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 start.append(i)
       
         elif match2a==True:
-            if start!=[]:
+            if start==[]:
                 start.append(i)
         elif match2b==True:
             if start!=[]:
@@ -772,7 +680,10 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif 'comments from reviewer' in stra:
             if start==[]:
                 nana.append(i)
-                
+        elif i<int(len(dx)/10) and len(dx)>290:
+            if 'Reviewer: ' in stra:
+                start.append(i)
+                #%
         if match3==True:
             end.append(i)
         elif match4==True:
@@ -789,9 +700,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             if end==[]:
                 panaa.append(i)
                 end.append(i)
-#        elif 'Please enter your name:' in stra:
-#            if panaa==[]:
-#                panaa.append(i)
         elif 'Another editor' in stra:
             if end==[]:
                 panaa.append(i)
@@ -802,7 +710,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         if match4:
             sup.append(i)
             supa.append([dx[i].split(": ")[1].split(" Job Title")[0],i])
-            
+           
         if 'Job Title:' in stra:
             ss.append(i)
             a=dx[i].split("Job Title: ")[1] ==['']
@@ -817,7 +725,14 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 sx.append(dx[i].split("Please enter your name: ")[1])
             elif 'Job Title:' in stra:
                 sx.append(dx[i].split("Please enter your name: ")[1].split("Job Title")[0])
-
+        if  "chair" in stra and i<30 and len(dx)>91 and 'Members of the committee were: ' in \
+        dx[i] or "Chair" in stra and i<30 and len(dx)>91 and 'Members of the committee were: ' in dx[i]:
+#            oh.append(i)
+            sx.append([dx[i].split("Members of the committee were: ")[1]])
+        elif "chair" in stra and i<30 and len(dx)>91 or "Chair" in stra and i<30 and len(dx)>91:
+            sx.append([dx[i]])
+            
+#%
         if 'Institution:' in stra:
             ssx.append(dx[i].split('Institution: ')[1]) 
         if 'Job Title:' in stra:
@@ -826,7 +741,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             ssa.append([dx[i],i])
         if 'Thank you for sending us your paper. We read it with interest but I am sorry to say that' in stra:
             start.append(0)
-            end.append(int(len(dx)*0.95))
+            end.append(int(len(dx)*0.98))
         if 'entitled "' in stra:
             if i<int(len(dx)*0.2):
                 Article.append((dx[i].split('entitled "')[1]).split('"')[0])
@@ -851,14 +766,16 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             supass.append([ssn[i][0].split("Institution: ")[1].split(' Reimbursement')[0], ssn[i][1]])
         elif ssn[i][0].split("Institution: ")[0] ==['']:
             supass.append(['nan',ssn[i][1]])
+            #%
+    if len(end)>2 and len(start)>2 and end[0]>start[0] and end[0]>start[1] and abs(start[0]-start[1])>28:
+        end.append(start[1])
+    end=list(np.sort(end)) 
     #%
     if start==[]:
         if len(nana)!=0:
             start.append(nana[0])
         elif len(nana)==0:
             start.append(0)
-#        start.append(0)
-#        end=start[1:]
     if start==[]:
         start.append(0)
     if end==[]:
@@ -871,45 +788,132 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     end.append(int(len(dx)*0.98))  
             else:
                 pass
+            #%
         elif len(panaa)==0:
-            end.append(int(len(dx)*0.98))           
+            end.append(int(len(dx)*0.95)+1) 
+            #%
     if end==[]:
         end=start[1:]
         end.append(int(len(dx)*0.98))
    
-    #%
+    #%breaking point for start
     i=0
     at=[]
     for i in range(len(start)):
-        if abs(start[i]-start[i-1])<3:
+        if abs(start[i]-start[i-1])<3 or abs(start[i]-start[i-1])<4 and len(start)>5:
             at.append(i)
             #%
     if len(start)>2:
-        start = [j for i, j in enumerate(start) if i not in at]
-    #%
+        if at==[1, 2]:
+            start=start[2:]
+        elif len(at)>2 and at!=[1, 2] or len(at)<2 or len(at)==2:
+            start = [j for i, j in enumerate(start) if i not in at]
+    #%if end bad good breaking point for end
     i=0
     at=[]
     for i in range(len(end)):
         if len(end)!=len(start)*3:
-            if abs(end[i]-end[i-1])<7:
+            if abs(end[i]-end[i-1])<6 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
                 at.append(i)
+#        elif len(end)==len(start)*2:
+#            if abs(end[i]-end[i-1])<5 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
+#                at.append(i)
+#            
             #%
     if len(end)>2:
-        end = [j for i, j in enumerate(end) if i not in at]
+        if start[0]==end[1] and (len(end)-2)==len(start) and at[0]==1:
+            end=end[2:]
+        else:
+            end = [j for i, j in enumerate(end) if i not in at]
+            #%
+    if len(start)>4 and len(start)-1==len(end) and start[1]<end[0] and start[1]<29:
+        start=start[1:]
+        
         #%
+    if len(end)>1 and len(start)>1:
+        if end[-1]>160 and start[1]==end[0] and start[-1]==end[-2]:
+            end[0]=int(end[0]*0.8)
+            end[1]=int(end[1]*0.87)
+            for i in range(2,len(end)-1):
+                end[i]=int(end[i]*0.90)
+        #%
+    if len(end)-1==len(start) and len(start)>4 and end[-1]>end[-2] and end[-2]>start[-1]:
+        end=end[0:-1]
+    if len(end)+1==len(start) and len(start)>3 and start[-1]>start[-2] and start[-1]>end[-2] and abs(start[-1]-start[-2])<4:
+        start=start[0:-1]
+    if len(start)==len(end) and len(end)==6 and len(dx)>200 and start[1]<end[0] and start[2]<end[1] and start[-1]<end[-2] and abs(end[-1]-end[-2])<9:
+        end.insert(0,start[1])
+        end.pop(-1)
+    #%
+    
+    if len(end)>3 and len(start)>1 and (len(end)-1)==len(start) and end[-2]<start[-1] and end[-3]<start[-2] and len(dx)<206 and start[0]>23 and end[0]<41:
+        at=[]
+        for i in range(len(end)):
+            if len(end)!=len(start)*3:
+                if abs(end[i]-end[i-1])<7 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
+                    at.append(i)
+        end = [j for i, j in enumerate(end) if i not in at]
+    #%
+    if len(end)>2 and len(start)>1 and (len(end)-1)==len(start) and end[-2]<start[-1] and end[-3]<start[-2] and len(dx)>205 and start[0]>23:
+        at=[]
+        for i in range(len(end)):
+            if len(end)!=len(start)*3:
+                if abs(end[i]-end[i-1])<7 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
+                    at.append(i)
+        end = [j for i, j in enumerate(end) if i not in at]
+        
+    if len(end)>2 and len(start)>2 and end[0]>start[2] and (len(end)-1)==len(start) and len(dx)>80 and start[0]>16:
+        at=[]
+        for i in range(len(end)):
+            if len(end)!=len(start)*3:
+                if abs(end[i]-end[i-1])<7 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14:
+                    at.append(i)
+        end = [j for i, j in enumerate(end) if i not in at]
+        if len(sx)==len(end) and abs(start[0]-start[2])<11 and start[0]>16 and len(dx)>80 and start[-1]>60 and end[-1]>70:
+            start=start[2:]
+            #%
+            
+    if len(end)==len(start) and len(start)>2 and end[0]>start[1] and end[-2]>start[-1] \
+    and end[1]>start[2] and abs(end[0]-end[1])>50 and len(dx)>180 and start[0]>10 and abs(start[0]-start[2])<45:
+        end.append(start[1]-1)
+        end=np.sort(end)
+        end=list(end)
+        #%
+        if len(dx)>180 and abs(end[-1]-end[-2])<10 and end[-2]>start[-1] and abs(end[-1]-len(dx))<34:
+            end.pop(-1)
+
+
+            
+#        end.pop(-3)
+        
+#% ok breaking point
 #    https://stackoverflow.com/questions/627435/how-to-remove-an-element-from-a-list-by-index    
 #%here are the exceptions
     endb=[]
     enda=[]
     endc=[]
     endd=[]
+    if len(end)>4 and (len(end)-1)==len(start):
+        end=end[0:-1]
+        #%
+    if len(start)>len(end) and end[-1]>start[-1] and abs(start[-1]-start[-2])<6 and len(end)>2:
+        start=start[0:-1]
+    at=[]
+    if len(start)>3 and len(end)!=len(start):
+        for i in range(len(start)):
+            if abs(start[i]-start[i-1])<4:
+                at.append(i) 
+        start = [j for i, j in enumerate(start) if i not in at]
     #%
     if len(end)!=len(start):
         if len(end)==len(start)*3:
-                for i in range(len(end)):
-                    if abs(end[i]-end[i-1])<5:
-                        at.append(i)
+            at=[]
+            for i in range(len(end)):
+                if abs(end[i]-end[i-1])<5 or len(end)>len(start) and len(end)>7 and abs(end[i]-end[i-1])<7:
+                    at.append(i)
+                        #%
         if len(end)>2:
+#            at=[]
             end = [j for i, j in enumerate(end) if i not in at]
                 #%
         if len(start)==2:
@@ -919,7 +923,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 end=endc
             elif len(end)<3:
                 pass
-            #%
         if len(start)==4:
             if len(end)>3:
                 if len(end)<=len(start)+2:
@@ -932,14 +935,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     pass
             elif len(end)<4:
                 pass
-#                at=[]
-#                for i in range(len(start)):
-#                    if abs(start[i]-start[i-1])<4:
-#                        at.append(i)
-#                start = [j for i, j in enumerate(start) if i not in at]
-            #%      
+            #%
     if len(end)>len(start):
-        if len(start)>1:
+        if len(start)>1 and abs(end[1]-end[0])>7:
             end=end[0:-1]
             if len(enda)>len(start):
                 endb.append(enda[0])
@@ -956,52 +954,113 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             #%
     if len(start)>4:        
         if end[0]-start[0]<4:
-            start=start[1:]
-            end=end[1:]
+            if len(end)!=len(start):
+                start=start[1:]
+                end=end[1:]
      #%
-    def test(end): 
-    #%     
-        i=0
-        au=[]
-        for i in range(len(end)):
-            if end[i]-end[i-1]>3:
-                au.append(end[i])
-        enda=[]
-        enda=end[0]
-        au.insert(0,enda)
-    #    https://developers.google.com/edu/python/lists
-        end=au
-        return end
-#%
-    end=test(end)
-    if len(start)>len(end):
-        end.append(int(len(dx)*0.95))
+    if len(end)!=len(start):
+        def test(end): 
+        #%     
+            i=0
+            au=[]
+            for i in range(len(end)):
+                if end[i]-end[i-1]>3:
+                    au.append(end[i])
+            enda=[]
+            enda=end[0]
+            au.insert(0,enda)
+        #    https://developers.google.com/edu/python/lists
+            end=au
+            return end
+    #% The pandas are better to handle data (in functions) than list of lists (according to my experience):
+        if end!=[]:
+            end=test(end)
+            #%
+        if len(start)>len(end) and len(end)>1 and len(start)>2 and start[1]<end[0]:
+            end.append(start[1])
+        end=np.sort(end)
+        end=list(end)
+            #%
+        if len(start)!=[] and len(end)!=[] and len(end)>0:
+            if len(start)>len(end) and abs(int(len(dx)*0.98)-end[-1])>4:
+                end.append(int(len(dx)*0.98))
+        #%
+        if len(start)==5 and len(end)==4 and start[2]<end[1] and end[-1]>110 and start[0]>22:
+            end.append(start[2])
+        end=np.sort(end)
+        end=list(end)
     #%
+    if len(start)==len(end) and len(dx)>120 and len(end)>2 and end[-2]>start[-1] and start[0]>20 and abs(start[1]-end[0])<2:
+        end.pop(-1)
+        end.insert(-2,start[-1])
+        end=np.sort(end)
+        end=list(end)
+        #%
+        
+        
+        
     if len(start)>len(end):
-        if end[0]==start[1] or end[0]+1==start[1] or end[0]-1==start[1] or end[0]+2==start[1] or end[0]-2==start[1]:
+        if len(start)!=[] and len(end)!=[] and len(end)>0 and len(start)>1:
+            if end[0]==start[1] or end[0]+1==start[1] or end[0]-1==start[1] or end[0]+2==start[1] or end[0]-2==start[1]:
+                start.pop(1)
+
+    end=np.sort(end)
+    end=list(end)
+    
+    if len(end)>5 and len(start)==len(end) and len(dx)>175 and end[0]>start[1] and end[-2]>start[-1] and end[1]>start[2] and end[2]>start[3] and abs(end[-1]-end[-2])<12:
+        end.insert(0,start[1])
+        end.pop(-1)
+        #%
+    end=np.sort(end)
+    end=list(end)
+    
+    #%
+    if len(start)>1 and len(end)>1:
+        if start[1]<end[0] and len(start)>5:
+            start[1]=end[0]
+            start[0]=int(end[0]-2)
+    if len(end)>1 and len(start)>2:
+        if end[1]==start[2] and len(start)>5 and abs(start[1]-start[2])<10 and end[0]<start[2]:
             start.pop(1)
+            end.pop(1)
     #%
     if len(end)<len(start):
-        ex=[]
-        ex=start[1]
-        end.insert(0, ex)
-        if end[-1]==len(dx):
-            end.pop(-1)
-            if sup!=[]:
-                if max(sup)<len(dx):
-                    end.append(max(sup))
-                elif max(sup)==len(dx):
-                    end.append(int(len(dx)*0.95))
-                    
-            elif sup==[]:
-                end.append(int(len(dx)*0.95))
-        if len(end)<len(start):
-            enda=[]
-            enda=end[-1]
-            e2=[]
-            e2=start[1:]
-            e2.append(enda)
-            end=e2
+        if len(start)!=[] and len(end)!=[] and len(end)>0 and len(start)>1:
+            ex=[]
+            ex=start[1]
+            end.insert(0, ex)
+            if end[-1]==len(dx):
+                end.pop(-1)
+                if sup!=[]:
+                    if max(sup)<len(dx):
+                        end.append(max(sup))
+                    elif max(sup)==len(dx):
+                        end.append(int(len(dx)*0.98))
+                        
+                elif sup==[]:
+                    end.append(int(len(dx)*0.98))
+            if len(end)<len(start):
+                enda=[]
+                enda=end[-1]
+                e2=[]
+                e2=start[1:]
+                e2.append(enda)
+                end=e2
+                #%relatively good breaking point
+    if len(end)>1 and len(start)>2 and end!=[] and start!=[]:
+        if abs(end[0]-end[1])>int(end[-1]/2):
+            end.append(start[2])
+        if len(end)-1==len(start) and len(start)>4 and end[-2]>start[-1] and (start[1]+50)<end[1]:
+            end=end[0:-1]
+    if end!=[] and len(start)>3:
+        if abs(end[1]-end[2])>int(end[-1]/2):
+            end.append(start[3])
+        if len(end)-1==len(start) and len(start)>4 and end[-2]>start[-1] and (start[1]+50)<end[1]:
+            end=end[0:-1]
+            #%
+    if len(end)>1 and len(start)>1:
+        if abs(end[-1]-end[-2])<5:
+            end=end[0:-1]
 
     aux2=[]
     a3=[]
@@ -1010,37 +1069,52 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         for i in range(len(end)):
             if end[i]-end[i-1]<4 and end[i]-end[i-1]>0:
                 aux2.append(i-1)
-    a3.append(end[0])
+    if end!=[]:
+        a3.append(end[0])
     i=0
 
     for i in range(len(aux2)):
         if aux2[i]-aux2[i-1]>1:
             a3.append(end[aux2[i]])
-    
+    #%
     if len(start)<len(end):
-        if len(start)>1:
+        if len(start)+1==3 and abs(end[1]-end[0])<8:
+            if abs(end[1]-end[0])==7:
+                aq=[]
+                aq.append(end[0])
+                aq.append(end[-1]+1)
+                end=[]
+                end=aq
+            else:
+                aq=[]
+                aq.append(end[0])
+                aq.append(end[-1])
+                end=[]
+                end=aq
+        elif len(start)>1 and abs(end[1]-end[0])>7:
             a3.insert(0, start[1])
             end=a3
         elif len(start)==1:
             a3.insert(0, start[0])
             end=[a3[1]]
         elif len(start)==0:
-            end.append(int(len(dx)*0.95))
+            end.append(int(len(dx)*0.98))
             start.append(int(len(dx)*0.05))
 #%
     if len(end)!=len(start):
-        enda=[]
-        enda=end[-1]
-        end=start[1:]
-        if sup!=[]:
-            if max(sup)<len(dx):
-                end.append(max(sup))
-        elif sup==[]:
-            end.append(int(len(dx)*0.95))
-        elif enda<int(len(dx)*0.99):
-            end.append(enda)
-        elif enda>int(len(dx)*0.9):
-            end.append(int(len(dx)*0.95))
+        if end!=[]:
+            enda=[]
+            enda=end[-1]
+            end=start[1:]
+            if sup!=[]:
+                if max(sup)<len(dx):
+                    end.append(max(sup))
+            elif sup==[]:
+                end.append(int(len(dx)*0.98))
+            elif enda<int(len(dx)*0.98):
+                end.append(enda)
+            elif enda>int(len(dx)*0.9):
+                end.append(int(len(dx)*0.98))
     #%
     peta=[]
     eta=[]
@@ -1057,7 +1131,40 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     
             del end[peta]          
             end.insert(peta, eta)
+    if len(end)==len(start):
+        end=np.sort(end)
+    end=list(end)
                 #%
+    apo=[]
+    if len(start)>0:
+        for i in range(len(start)):
+            apo.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[start[i]])))))
+            if apo[i]>3 and 'Reviewer' in dx.iloc[start[i]] and apo[i]<7 or \
+            len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[start[i]].split('Reviewer')[0]))))>3:
+                start[i]=start[i]+1
+                #%
+    if end!=[] and start!=[] and len(end)>0 and len(start)>1:
+        if len(end)==len(start) and len(start)>6:
+            if abs(start[0]-start[1])<3 and abs(start[1]-start[2])<5: 
+                if (start[2]-start[1])<-3 and abs(start[0]-start[1])<=2:
+                    ok=start[0]
+                    start=start[2:]
+                    start[0]=ok
+#%
+                if end[0]==end[1] and abs(end[2]-end[1])>12:
+                    end=end[1:-1]
+    if len(end)>5 and len(start)>5:
+        end=np.unique(end)
+        end=np.sort(end)
+        end=list(end)
+        start=np.unique(start)
+        start=np.sort(start)
+        start=list(start)
+                    #%
+    if start==[]:
+        start.append(int(len(dx)/10))
+    if end==[]:
+        end.append(int(len(dx)-3))   
     def names(supass, xt='JOURNAL'):
         #%
         supass2=[]
@@ -1083,8 +1190,10 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         #https://stackoverflow.com/questions/3462143/get-difference-between-two-lists
         #General:
         endax1=[]
-        for i in range(len(no)):
-            endax1.append(end.index(no[i]))
+        if no!=[] or len(no)>0 and len(end)>0 or end!=0:
+            for i in range(len(no)):
+                endax1.append(end.index(no[i]))
+                #%
         #The names    
         endax2=[]
         for i in range(len(sn)):
@@ -1127,6 +1236,18 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
 #%
     io2=[]
     tot=[]
+    tat=[]
+#    tit=[]
+#    tut=[]
+    ras=[]
+    rus=[]
+#    ris=[]
+    res=[]
+    if start==[]:
+        start.append(int(len(dx)/10))
+    if end==[]:
+        end.append(int(len(dx)-3))
+        #%
     for i in range(len(start)):
         res=[]
         io2=list(tuple(range(start[i], end[i])))
@@ -1134,10 +1255,78 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     #https://www.geeksforgeeks.org/python-program-to-count-words-in-a-sentence/     
     #https://stackoverflow.com/questions/44284297/python-regex-keep-alphanumeric-but-remove-numeric
     #%'https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7992 https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7993'
-        for i in io2:
-            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i])))))
-        tot.append(np.sum(res))
-    
+        if start[0]!=0 and end[0]<6000 and len(end)==len(start):
+            for i in io2:
+    #            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i]))))) # (?<![\"=\w])(?:[^\W_]+)(?![\"=\w])
+                res.append(len(dx.iloc[i].split(' ')))
+                ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', str(dx.iloc[i]))))
+    #            rus.append(len(re.findall(r'[0-9]+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i])))))
+    #            ris.append(len(re.findall(r'(?=.*?[a-zA-Z].*?[a-zA-Z])', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i])))))
+            tot.append(np.sum(res))
+            tat.append(np.sum(ras))
+#        tit.append(np.sum(rus))
+#        tut.append(np.sum(ris))
+        elif start[0]==0 and end[0]>6000:
+            tot.append(0)
+            tat.append(0)
+            #%
+        pat=[]
+        for i in range(len(tat)-1):
+            pat.append(tat[i+1]-tat[i])
+        pat.insert(0,tat[0])
+        #%
+        
+        for i in range(len(pat)):
+            if pat[i]>199:
+                if pat[i]>422:
+                    if np.median(pat)*6>int(pat[i]/4):
+                        pat[i]=int(pat[i]/2)-np.median(pat)
+                    elif np.median(pat)*6<int(pat[i]/4):
+                        pat[i]=int(pat[i]/4)-np.median(pat)*5
+                elif pat[i]<422 and pat[i]>199:
+                    pat[i]=int(pat[i]/4)+np.median(pat)*5+int(np.median(pat)/2)+2
+            elif pat[i]<200 and pat[i]>99 and np.max(pat)==pat[i]:
+                pat[i]=np.median(pat)
+            elif pat[i]<200 and pat[i]>99:
+                pat[i]=int(pat[i]/3)
+            elif pat[i]<100 and pat[i]>49 and np.max(pat)==pat[i]:
+                pat[i]=np.median(pat)
+            elif pat[i]<100 and pat[i]>49:
+                pat[i]=int(pat[i]/1.5)+np.median(pat)
+                #%
+        for i in range(len(pat)):
+            pat[i]=int(pat[i])
+            
+        ko=[]
+        ko.append(np.median(pat))  
+        po=[]
+        po.append(np.min(pat))
+        no=[]
+        no.append(np.max(pat))
+        #%
+        if len(pat)>1 and len(tot)>1:
+            if np.median(pat)<100:
+                for i in range(len(pat)):   
+                    if pat[i]>po[0]:
+                        if pat[i]<no[0] and int(abs(pat[i]-ko[0]))>4:
+                            pat[i]=int(pat[i]/1.8)
+                        elif int(abs(pat[i]-ko[0]))<5:
+                            pass
+                        elif len(pat)<3 or len(pat)>6:
+                            if pat[i]>365:
+                                pat[i]=ko*6
+    for i in range(len(pat)):
+        pat[i]=int(pat[i])
+            #%
+#    if pat!=[] and len(pat)==len(tot):
+#        for i in range(len(tot)):
+#            tot[i]=tot[i]+pat[i]
+            #%
+    if len(Reviewer)-1==len(tot) and len(start)==len(tot):
+        Reviewer=Reviewer[1:]
+    elif len(Reviewer)+1==len(tot) and len(start)==len(tot):
+        Reviewer.insert(0,'Members of the committee')
+        
     separate2=[]
     if tot==[]:
         tot.append('rev')
@@ -1150,53 +1339,46 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     elif separate==[]:
         separate=['no']* len(Reviewer)
         separate2=separate
- #%
+        #%
+    for i in range(len(tot)):
+        tot[i]=int(tot[i])
+        if pat[i]>4 and tot[i]>49 and tot[i]<3500 and pat!=[] and len(pat)==len(tot):
+            if pat[i]<26:
+                tot[i]=tot[i]+int(pat[i]/1.6)
+            elif pat[i]>25:
+                tot[i]=tot[i]+int(pat[i]/60)+18
+        elif pat[i]<4 and tot[i]>39:
+            tot[i]=tot[i]+pat[i]
+                #%
+    
+        #%
     return tot, Reviewer, Title, Institution, Article2, Designation, separate2 
-#%%Test:
-#Words, Reviewer, Title, Institution, Article2, Designation=words2(dx=dtok[15],xx=int(desig[15][1]))
-    #%Got it, the amount of words in peer reviews about ok:
+#%Test:
+#Words, Reviewer, Title, Institution, Article2, Designation, separate=words2(dx=dtok[15],xx=int(desig[15][1]))
+#%Got it, the amount of words in peer reviews about ok:
+#len(dtok)
 test_short=[]   
 for i in range(len(dtok)): 
     test_short.append(words2(dx=dtok[i],xx=int(desig[i][1])))
-    #got some value, but checking.. now about
-
-    #%ok..
+    #%got some value, but checking.. now about
 test_short2=[]
 test_short2=test_short  
-#%%
-#tnan=pd.DataFrame(test_short2)
-#tnan.to_csv('half of the info_BMJ_2015_26520_v2.csv')
-#%Should you need to load:
-#tnan=[]
-#tnan=pd.read_csv("test_short2_BMJ_2015_24420.csv")
-#%You need to do this, if you want to load as a list again:
-#tnan=tn.ix[:,1:]
-#tnan=tn.values.tolist()
-#taxi=[]
-#for i in range(len(tnan)): 
-#    taxi.append([x for x in tnan[i] if x == x])
-#tnan=taxi
-#test_short2=tnan 
 #%It was tuple list, so now I convert it to list of lists:
 #https://stackoverflow.com/questions/16730339/python-add-item-to-the-tuple
 tt=[]
 for i in range(len(test_short2)):
     tt.append(list(test_short2[i]))
-#%
 ttax=pd.DataFrame(tt)
-ttax.to_csv('half of the infoos_BMJ_2015_26520_v3.csv')  
-   
+ttax.to_csv('half of the infoos_BMJ_2018_23620_v3.csv')  
 def panda(a):   
     panda1=[]
     panda1=pd.DataFrame(a, index=['Review Word Count', 'Reviewer Name', "Reviewer's Title", \
  "Reviewer's Institution", 'Article Name','Designation', 'Attachments'])
     panda1=panda1.T
     return panda1
-
 totaali=[]
 for i in range(len(tt)):
     totaali.append(panda(tt[i]))
-
 result = pd.concat(totaali)
 #%https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html 
 result.fillna(value=pd.np.nan, inplace=True)
@@ -1209,9 +1391,7 @@ result['Writers of Article'] = pd.DataFrame(index=range(len(result)),columns=ran
 result['Date of Publication'] = pd.DataFrame(index=range(len(result)),columns=range(1))
 result['Title of Article'] = pd.DataFrame(index=range(len(result)),columns=range(1))
 result['Link to Publication'] = pd.DataFrame(index=range(len(result)),columns=range(1))
-#%
 result['Link to PDF of Review'] = pd.DataFrame(index=range(len(result)),columns=range(1))
-#%
 result['Link to All Reviews'] = pd.DataFrame(index=range(len(result)),columns=range(1))
 result['Page Count'] = pd.DataFrame(index=range(len(result)),columns=range(1))
 #result['Attachments'] = pd.DataFrame(index=range(len(result)),columns=range(1))
@@ -1224,18 +1404,15 @@ result=result.replace('YYY', 'nan')
 #%result=result.iloc[0:675,:]
 result = result[result['Designation'].notna()]
 #huh, now I got the designation correct in result, now need to match that to the final matrix designation
-#%%There must be faster ways to do this, than below, e.g. with maps or libraries etc.:
+#%There must be faster ways to do this, than below, e.g. with maps or libraries etc.:
 #result.applymap(lambda y: [result.applymap(lambda x: x == [])]=='nan')
 #final_matrix=final_matrix.drop(columns=['Reviewer'])
-
 for i in range(len(final_matrix)):
     for j in range(len(result)):
         if final_matrix.index.tolist()[i]==int(result['Designation'].iloc[j]):
-
             result['Title of Article'].iloc[j]=final_matrix['Title of Article'].iloc[i]
             result['Page Count'].iloc[j]=final_matrix['Page Count'].iloc[i]
-            result['Attachments'].iloc[j]=final_matrix['Page Count'].iloc[i]
-            #%
+#            result['Attachments'].iloc[j]=final_matrix['Attachments'].iloc[i]
 for i in range(len(final_matrix)):
     for j in range(len(result)):
         if final_matrix.index.tolist()[i] ==result['Designation'].iloc[j]:
@@ -1252,7 +1429,6 @@ for i in range(len(xa)):
             result['Link to PDF of Review'].iloc[j]=final_matrix['Link to PDF of Review'].loc[int(xa[i])]
             #note the loc in the final matrix of previous row!
             #this should come from 
-#%
 #1) It seems that link to pdf is not giving all the data, the articles etc. metadata are not refering to right review..   
 #%Let me first check the designation..:
 result=result.drop(columns=['Designation', 'Article Name'])           
@@ -1274,8 +1450,9 @@ resulta=['Journal Name','Title of Article', \
                'Link to PDF of Review',\
                'Page Count',\
                'Attachments']
-df = result[resulta]  
 #%
+df=[]
+df = result[resulta]  
 df=df.replace('x', 'nan') 
 df=df.replace('n/a', 'nan')   
 df=df.replace('N/A', 'nan')  
@@ -1292,19 +1469,67 @@ df=df.replace('none', 'nan')
 #are saving it as excel file, the 'nan' values do not dissapear (in excel)
 #https://stackoverflow.com/questions/22005911/convert-columns-to-string-in-pandas
 df['Reviewer\'s Title'] = df['Reviewer\'s Title'].astype(str) 
-df["Reviewer's Institution"] = df["Reviewer's Institution"].astype(str)       
+df["Reviewer's Institution"] = df["Reviewer's Institution"].astype(str)   
+df["Review Word Count"] = df["Review Word Count"].astype(str)   
+df=df.loc[df['Review Word Count']!='nan'] 
+df["Review Word Count"] = df["Review Word Count"].astype(float) 
+df["Reviewer Name"] = df["Reviewer Name"].astype(str)   
+df=df.loc[df['Reviewer Name']!='nan']  
+df["Link to PDF of Review"] = df["Link to PDF of Review"].astype(str)   
+df=df.loc[df['Link to PDF of Review']!='nan'] 
+df=df.loc[df["Reviewer Name"].drop_duplicates().index]
+#from itertools import groupby 
+#res = [i[0] for i in groupby(np.sort(df["Reviewer Name"]))] 
 #%IF some values are gray, convert them to string manually by clicking the table (with mouse)
 for i in range(len(df)):
     if ';' in df['Title of Article'].iloc[i]:
         df['Title of Article'].iloc[i]=df['Title of Article'].iloc[i].split(';')[0] 
-        #%
 for i in range(len(df)):
-    if 'BMJ 2015' in df['Title of Article'].iloc[i]:
-        df['Title of Article'].iloc[i]=df['Title of Article'].iloc[i].split('BMJ 2015')[0] 
-    #%
+    if 'BMJ 2018' in df['Title of Article'].iloc[i]:
+        df['Title of Article'].iloc[i]=df['Title of Article'].iloc[i].split('BMJ 2018')[0] 
 #%If something too much or little, you man need to have more here..
-#df=df.iloc[0:493,:]
-            #%
+#df=df.iloc[:,'Review Word Count']!='nan'
+#%Should you need to remove clearly wron values:
+        #%
+#df=df.loc[df.index!=244]
+        #%
 dtokz=pd.DataFrame(df)
-dtokz.to_csv('bmj_reviews2015_27520tikka.csv',index=False)
-dtokz.to_excel("bmj_reviews2015_tikka27520.xlsx") 
+dtokz.to_csv('bmj_reviews2018_tikka16720_v1.csv',index=False)
+dtokz.to_excel("bmj_reviews2018_tikka16720_v1.xlsx") 
+#%
+#np.mean(dtokz['Review Word Count'])
+dfa2=dtokz
+aa=dfa2['Review Word Count']<26
+bb=dfa2['Attachments']=='attached'
+cc= aa & bb
+dd= ~cc
+#https://stackoverflow.com/questions/15998188/how-can-i-obtain-the-element-wise-logical-not-of-a-pandas-series
+#%if dfa2['Attachments']=='attached' or dfa2['Review Word Count']<5
+dfa2=dfa2[dd]
+#dfa2=dfa2[dfa2['Review Word Count']!=0]
+#dfa2=dfa2[dfa2['Review Word Count']!=1]
+dfa2=dfa2[dfa2['Reviewer Name']!='Members of the committee']
+#%
+nn=[]
+for i in dfa2.index:
+    if "['" in dfa2['Reviewer Name'][i]:
+        nn.append(i)
+def Diff(li1, li2): 
+    return (list(set(li1) - set(li2))) 
+#  https://www.geeksforgeeks.org/python-difference-two-lists/
+# Driver Code 
+li1 = dfa2.index
+li2 = nn
+ok=Diff(li1, li2)
+dfa2=dfa2.loc[ok]
+#%%
+import pandas as pd
+f =  pd.read_csv('2018aa.txt', header=None)
+#https://stackoverflow.com/questions/21546739/load-data-from-txt-with-pandas
+#https://www.quora.com/How-do-I-open-a-URL-in-Google-Chrome-in-new-tab-using-Python
+import webbrowser
+for i in range(len(f)):
+    url = f.iloc[i][0]
+    webbrowser.open_new_tab(url)
+#%%
+dfa2.to_csv('bmj_reviews2018_tikka16720_v2.csv',index=False)
