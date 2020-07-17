@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 23 14:16:40 2018
+Created on Thu Jan 23 14:16:40 2020
 
 @author: pauli
 """
 # Task 1.
 
 # Extract the following journal peer review data for each (available) article from 
-# BMJ, PLOS Medicine, and BMC between January 15 2018 and January 14 2018, and use also google searches: 
+# BMJ, PLOS Medicine, and BMC between January 15 2020 and January 14 2020, and use also google searches: 
 
 #(1) The quality of preventive care for pre-school aged children in Australian general practice
 #(2) Louise K. Willes
-#(3) 6.12.2018
+#(3) 6.12.2020
 #(4) 3 reviewers
 #(5) Dagmar Haller 
 #(6) (366 words), 
@@ -47,16 +47,16 @@ from statistics import mean
 #%%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
-#For 2018..   (check th number of these..) 
-urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=16&searchType=&tab=keyword'
-urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=2'
-urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=3'
-urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=4'
-urln_all5='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=5'
-#urln_all6='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=6'
-#urln_all7='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=16&page=7'
+#For 2020..   (check th number of these..) 
+urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=18&searchType=&tab=keyword'
+urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=2'
+urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=3'
+urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=4'
+#urln_all5='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=5'
+#urln_all6='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=6'
+#urln_all7='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=7'
 #%%Here all combined..
-utot=[urln_all, urln_all2, urln_all3, urln_all4, urln_all5]#, urln_all6]#, urln_all7]
+utot=[urln_all, urln_all2, urln_all3, urln_all4]#, urln_all5, urln_all6]#, urln_all7]
 soupn=[]
 responsen=[]
 one_a_tagn=[]
@@ -230,9 +230,9 @@ for i in range(len(orig_url)):
     datee_aut2.append(date(url=orig_url.iloc[i,0]))
 #%Datee2 should be saved..(dates, authors and titles without order)
 dat=pd.DataFrame(datee_aut2)
-dat.to_csv('dates_authors_titles_BMC2018_tikka29520.csv') #you can use this as datee_aut2 in future  
+dat.to_csv('dates_authors_titles_BMC2020_tikka29520.csv') #you can use this as datee_aut2 in future  
 #datee_aut2=[]
-#datee_aut2=pd.read_csv("dates_authors_titles_BMC2018_tikka29520.csv")
+#datee_aut2=pd.read_csv("dates_authors_titles_BMC2020_tikka29520.csv")
 #datee_aut2=datee_aut2.iloc[:,1:4] #there was an extrac column   
 #%This sorting must go hand in hand with orirg_url and download_url:
 datee_aut2=pd.DataFrame(datee_aut2)
@@ -259,12 +259,12 @@ auxif2=pd.concat(auxif, axis=1)
 #ok=list(OrderedDict.fromkeys(datee_aut2))
 ##%% Saving
 #da_au=pd.DataFrame(ok)
-#da_au.to_csv('dates and authors_BMC2018_tikka15420.csv')
+#da_au.to_csv('dates and authors_BMC2020_tikka15420.csv')
 ##%% Loading:
 #da_au=[]
-#da_au=pd.read_csv("dates and authors_BMC2018_tikka15420.csv")
+#da_au=pd.read_csv("dates and authors_BMC2020_tikka15420.csv")
 #da_au=da_au.iloc[:,1:4] #there was an extrac column
-#%This loop seem to be working below (24.1.2018), This takes 10 min, before enter, check if you already have what you need
+#%This loop seem to be working below (24.1.2020), This takes 10 min, before enter, check if you already have what you need
 tinka=[]
 linkaas=[]
 indaas=[]
@@ -280,7 +280,7 @@ for i in range(0,len(auxif2)):
     ind=[]
     for n in range(0, len(link)):  
         str = link[n]
-        match = re.search(r'Report_V', str)#in year 2018 this changes to V1 (or V0?), 2018 this changes to V2
+        match = re.search(r'Report_V', str)#in year 2020 this changes to V1 (or V0?), 2020 this changes to V2
         if match:
             ind.append(n)   
     linka=[]
@@ -294,16 +294,16 @@ for i in range(0,len(auxif2)):
 #np.sum(rint)    
 #%The previous was also time consuming (5 min), so better save:
 #linkaase=pd.DataFrame(linkaas)
-#linkaase.to_csv('links_BMC2018_tikka17420.csv')   
+#linkaase.to_csv('links_BMC2020_tikka17420.csv')   
 #indaase=pd.DataFrame(indaas)
-#indaase.to_csv('indeces_BMC2018_tikka17420.csv')
+#indaase.to_csv('indeces_BMC2020_tikka17420.csv')
 #linkaas=[]
-#linkaas=pd.read_csv("links_BMC2018_tikka17420.csv")
+#linkaas=pd.read_csv("links_BMC2020_tikka17420.csv")
 #indaas=[]
-#indaas=pd.read_csv("indeces_BMC2018_tikka17420.csv") 
+#indaas=pd.read_csv("indeces_BMC2020_tikka17420.csv") 
 ##%% Loading:
 #da_au=[]
-#da_au=pd.read_csv("dates and authors_BMC2018_tikka15420.csv")
+#da_au=pd.read_csv("dates and authors_BMC2020_tikka15420.csv")
 #da_au=da_au.iloc[:,1:4] #there was an extrac column 
 #% This is why I like to be an engineer:
 #%Let's take all the correct links first:
@@ -376,15 +376,15 @@ naps_tot=naps00+naps11 #test naps_tot for the next file name..
 #%This is one of the time consuming internet extraction steps that needs to be done separately:
 #One needs to get the right order of pdfs/words already here, 
 # note the way the pdfs have been named:
-o=[]
-i=0
-for i in range(len(naps_tot)):
-    o.append(np.str(naps_tot[i][1]))
-    urllib.request.urlretrieve(naps_tot[i][0], \
-                               filename='C:\\python\\BMC2018\\' +o[i]+' '+naps_tot[i][0][-37:])  
-    #%you may need to check the range of naps_tot, e.g. from -39 to -37 in year 2018
+#o=[]
+#i=0
+#for i in range(len(naps_tot)):
+#    o.append(np.str(naps_tot[i][1]))
+#    urllib.request.urlretrieve(naps_tot[i][0], \
+#                               filename='C:\\python\\BMC2020\\' +o[i]+' '+naps_tot[i][0][-37:])  
+#%you may need to check the range of naps_tot, e.g. from -39 to -37 in year 2020
 #https://www.digitalocean.com/community/tutorials/how-to-convert-data-types-in-python-3  
-#%%There are two ways to do this. Either converge all the files as one, or import them separately as a big pands frame.
+#%There are two ways to do this. Either converge all the files as one, or import them separately as a big pands frame.
 # The method one:
 #% Read all files with pdf to word and compress program, e.g.WPS PDF to Word
 #the change the compressed doc to csv:
@@ -399,7 +399,7 @@ for i in range(len(naps_tot)):
 #https://www.guru99.com/python-regular-expressions-complete-tutorial.html#3
 #The method two: 
 #%Now I need to do I loop for all files, and save the results
-directory="C:\python\BMC2018\*.docx"
+directory="C:\python\BMC2020\*.docx"
 import glob
 dataframes = []
 all_files2=[]
@@ -445,9 +445,9 @@ for i in range(len(naps_tot)):
 tnz=pd.DataFrame(page_count)
             #%
 #dfee=pd.DataFrame(dfe)
-#dfee.to_csv('BMC2018_data_tikka1620.csv')
+#dfee.to_csv('BMC2020_data_tikka1620.csv')
 ##%%
-#total=pd.read_csv("BMC2018_data_tikka1620.csv")
+#total=pd.read_csv("BMC2020_data_tikka1620.csv")
 ##total=[]
 #total=total.iloc[:,1:]
 #dfe=total.values.tolist()
@@ -478,40 +478,41 @@ tnz=pd.DataFrame(page_count)
 #for i in range(len(total)): 
 #    taxi.append([x for x in total[i] if x == x])
 #total=taxi 
-#%%
-l=[]
-for i in range(len(dfe)):
-    for j in range(len(dfe[i])):
-        if 'Michael Rembis' in dfe[i][j]:
-            l.append(i)
-            print(i)
-    #%%
+#%
+#l=[]
+#for i in range(len(dfe)):
+#    for j in range(len(dfe[i])):
+#        if 'Yian Wan' in dfe[i][j]:
+#            l.append(i)
+#            print(i)
+#%
 def words2(df2):
     #%
-#    df2=dfe[489] #15 df2s two replace in testing (29520)
+    import re
+#    df2=dfe[90] #15 df2s two replace in testing (29520)
     io=[]
     xx=[]
     date=[]
     name=[]
     email=['The authors have adequately address the point raised','See attached marked-up manuscript',
            'Please find the comments in the attachment', 'in a separate file','See uploaded comments',\
-           'Please see the attached pdf file','My comments are in a separate file','-- Attached --',\
+           'Please see the attached pdf file','see file attached','Major compulsory revision','My comments are in a separate file','-- Attached --',\
            'See attachment', 'comments in the attachment', 'please see the attached','see attached',\
-           'see attached file', 'See attached document', 'attached file', 'Attached file', 'see attachment'\
+           'see attached file', 'See Attached','See attached document', 'attached file', 'Attached file', 'see attachment'\
            ,'paper is much improved', 'is now acceptable for', 'attached document','have no revisions',\
-           'please see uploaded document','Please see comments','Please see the attachment',\
+           'please see uploaded document','Please see comments','See uploaded file','Please see the attachment',\
            'The report is attached','the revisions have substantially improved the manuscript',
            'See attached report','Please see attached report','Please see report attached',\
-           'report attached', 'attached report','have addressed all of the points','a file was attached'\
+           'report attached', 'was attached', 'attached report','have addressed all of the points','a file was attached'\
            'the revised manuscript is considerably improved','has been done in the report',\
            'document I have uploaded', 'I have uploaded document','listed in my report', 'in my report',\
-           'See document uploaded', 'see the uploaded document', 'see uploaded document',\
+           'See document uploaded','No comment', 'see the uploaded document', 'see uploaded document',\
            'The authors asswered all the reviewers coments', 'have answered all the comments',\
            'send my review before', "Please see the reviewer's report", 'my report is added as a word document',\
            'second revised manuscript', 'have adequately addressed','See uploaded report',
            'good first attempt','revised manuscript','I have no further request', 'open the appendix',\
            'the one I attached was','second revised', 'has been adequately revised', 'has been revised',\
-           'I have no further comments', 'much improved','One more thing:']#, 'acceptable for',\
+           'I have no further comments', 'uploaded review comments','have adhered to comments','manuscript is considerably improved', 'Major Compulsory Revisions', 'much improved','One more thing:']#, 'acceptable for',\
 #           'is now acceptable', 'is improved','revisions made']
     appendix=[] 
     appendix2=[]
@@ -526,6 +527,8 @@ def words2(df2):
         match6 = re.search(r'Are you able to assess any statistics in the \
                       manuscript or would you recommend an additional statistical review?', stra)
         match7 = re.search(r'I am able to assess the statistics', stra)
+        match7aa = re.search(r'Which journal?:', stra)
+        match7a = re.search(r'What next?', stra)
         match8 = re.search(r'Quality of written English', stra)
         match8b = re.search(r'Acceptable', stra)
         match8c = re.search(r'Which journal?',stra)
@@ -547,6 +550,10 @@ def words2(df2):
         elif match5:
             io.append(i)
         elif match6:
+            io.append(i)
+        elif match7aa:
+            io.append(i)
+        elif match7a:
             io.append(i)
         elif match7:
             io.append(i)
@@ -594,7 +601,6 @@ def words2(df2):
     if len(new_list)==3:
         if len(io)>=3:
             io=io[2:]
-
             #%
     if io[0]==io[1]:
         io=io[1:]
@@ -646,24 +652,26 @@ def words2(df2):
     for i in range(len(den)):
         if den[i]==np.max(den):
             aa.append(i+1)
+            #%
     if io3[0]==0:
         io3=io3[1:]
+        #%
     if len(io3)>=4:
         if np.sum(io[0]+io[1])<8:
             if abs(io3[2]-io3[1])>3:
                 io3=io3[1:]
             elif abs(io3[3]-io3[2])>3:
                 io3=io3[2:]
+                #%
         elif abs(io3[2]-io3[1])>3:
             io3=io3[1:]
             if io3[0]>3:
                io3[0]=io[0] 
                 #%
-    if len(io3)>=6:
+    if len(io3)>=6 and int(abs(io[-1]+io[-2])/2-abs(io[-3]+io[-4])/2)<4:
         if abs(io3[0]-io3[1])<4:        
             io3=io3[aa[0]:]
             #%
-
     io2=[] 
     if len(io3)>=3:
         a=io3[0:3]
@@ -689,15 +697,20 @@ def words2(df2):
                 if io3[2]+2<io3[3]:
                     io2=list(tuple(range(io3[2]+1, io3[3]))) 
                     #%
-            elif io3[0]==2 and io3[1]==4 and len(io)>=6:
+            elif io3[0]==2 and io3[1]==4 and len(io)>=6 and io3[0:5]!=[2,4,6,8,10] and den[0]>np.median(den) and io[-2]>17:
                 try:
                     if io3[2]>6 or io3[2]>7: 
                         io2=list(tuple(range(io3[1]+1, io3[2])))
-                    elif io3[0]+2==io3[1]:
+                    elif io3[0]+2==io3[1] and den[0]>np.median(den) and den[-2]<den[1]:
                         io2=list(tuple(range(io3[0]+1, io3[1])))
+                        #%                            
                 except:
                     pass
-    
+            elif len(df2)<42 and io3[0:4]==[2,4,6,8] and abs(io3[-1]-io3[-2])<12 and \
+            ('Version' in df2[1] or 'Version' in df2[2] or \
+             'Version' in df2[3]) and ('Are the methods appropriate' in df2[3] \
+            or 'Are the methods appropriate' in df2[4] or 'Are the methods appropriate' in df2[5]):
+                io2=[3]
                 #%
             
             elif len(io3)>2:
@@ -714,7 +727,7 @@ def words2(df2):
                             tit.append(l+1)
         
                     if tit!=[]:
-                        if tit[0]>2:    
+                        if tit[0]>2 and io3[0:3]!=[2,4,6]:    
                             if len(tit)>1:
                                 io3[0]=io[tit[0]-1]  
                                 io3[1]=io[tit[1]] 
@@ -734,7 +747,7 @@ def words2(df2):
             elif io3[0]+2<io3[1]:
                 if len(io3)>=2:
                     if (io3[0]+io3[1])>=7: 
-                            io2=list(tuple(range(io3[0]+1, io3[1])))     
+                            io2=list(tuple(range(io3[0]+1, io3[1])))  
             else:         
                 pass
             #%
@@ -748,10 +761,10 @@ def words2(df2):
                     io2=list(tuple(range(io3[0], io3[1]))) 
             elif 'Are the methods appropriate and well described?' in df2.iloc[3]:
                 if np.max(den)==den[0]:
-                    io2=[2]
+                    io2=[2]                
             else:
                 io2=list(tuple(range(io3[1]+1, io3[2])))
-        #%
+        #%good breaking point, since io2 first time above
     if io2==[]:
         if len(io3)>1:
             if io3[0]+3<io3[1]:
@@ -759,27 +772,62 @@ def words2(df2):
                     if 'Quality of written English is good' in df2.iloc[6]:
                         io2=list(tuple(range(io3[0]+1,io3[1]+1)))
                         #%
-                    elif len(df2)<=8 and len(io3)==3 and io==io3:
-                        io2=[io3[0]+1]
+                    
+                    elif len(df2)<=8 and len(io3)==3:
+                        if len(io)>0 and len(io3)>0 and len(io)==len(io3):
+                            if list(io)==list(io3):
+                                io2=[io3[0]+1]
+                                #%
                     else:
                         io2=list(tuple(range(io3[0]+1,io3[1])))
                         #%
+                elif io3[0:4]!=[2,4,6,8] and len(io)>4:
+                    if np.median(io[-4:-2])<100:
+                        io2=list(tuple(range(io3[0],io3[1])))
                 else:
-                    io2=list(tuple(range(io3[0],io3[1])))
+                    io2=io3[0:2]
+
+                    #%
             elif io3[0]+3>io3[1]:
                 if np.sum(io3[0:3])>7:
                     if np.sum(io[0:4])>6:
-                        if np.sum(io[0:3])>6 and 'Which journal?' not in df2.iloc[6]:
-                            io2.append(io3[0]+1)
-                        elif np.sum(io[0:3])<=6 and 'Which journal?' in df2.iloc[6]:
-                            io2=[5]
+                        if len(df2)>5 and len(io)>3:
+                            if np.sum(io[0:3])>6 and 'Which journal?' not in df2.iloc[6] and io3[0:4]!=[2,4,6,8]:
+                                if 'Quality of written English' not in df2.iloc[6] and 'Which journal?' not in df2.iloc[5]:
+                                    io2.append(io3[0]+1)
+                                    #%
+                            elif np.sum(io[0:3])<=6 and ('Which journal?' or 'Quality of written English') in df2.iloc[6]:
+                                io2=[5]
+#%                           elif 
                     elif np.sum(io[0:4])<=6:
+#                        if len(io)>3:
                         io2.append(io[1]+1)
             elif io3[0]+3==io3[1]:
                 if io3[0]+1<io3[1]:
                     io2=list(tuple(range(io3[0]+1,io3[1])))
-            
+
+    if io[0]==0 and len(df)<13 and io3[0:5]==[2,4,6,8,10] and 'Quality of written English' in df2[6]:
+        io2=[5]
+    if io[0]==0 and len(df)<13 and io3[0:4]==[6,8,9,10] and 'Quality of written English' in df2[6]:
+        io2=[5]
+    if io[0]==0 and len(df)<13 and io3[0:3]==[2,4,7] and 'Quality of written English' in df2[7]:
+        io2=[5,6]
+    if io[0]==4 and len(df2)<13 and io3[0:3]==[4,5,6] and 'Which journal?' in df2[4]:
+        io2=[3]
+    if len(io)>3:
+        if abs(io[2]-io[3])>22 and len(df2)<35 and list(io[0:3])==[0,2,4] and "Reviewer's report:" in df2[4]:
+            io2=[5,len(df2)-1]
+        if abs(io[2]-io[3])>5 and len(df2)<18 and list(io[0:3])==[0,2,4]:
+            io2=[5,len(df2)-1]
+    
+                
+      
  #%
+    hih=[]
+    for i in range(len(den)):
+        if den[i]==np.max(den):
+            hih.append(i+2)
+            #%
     if io2==[]:
         if np.sum(io3[0:3])<=6:
             if len(io3)>=4:
@@ -792,12 +840,35 @@ def words2(df2):
                 elif abs(io3[0]-io3[1])>2:
                     io2=list(tuple(range(io3[0]+1,io3[(len(io3)-1)])))
                 
-                
-        elif np.sum(io3[0:3])>6:
-            if len(io3)>4:
+                #%
+        elif np.sum(io3[0:3])>6 and len(io)>3:
+            if len(io3)>4 and np.median(io[-4:-2])<100 and 'Which journal?' not \
+            in df2.iloc[5] and len(df2)>11 and 'Are the methods appropriate and well described?' \
+            not in df2.iloc[4]:
                 io2=list(tuple(range(io3[1]+1,io3[-2])))
-            else:
-                io2=list(tuple(range(io3[0]+1,io3[-1])))
+                #%
+            elif np.median(io[-4:-2])>100 and abs(io3[0]-io3[1])<90:
+                io2=list(tuple(range(io3[0]+1,io3[hih[0]])))
+            elif np.median(io[-4:-2])>100 and abs(io3[0]-io3[1])>90:
+                io2=list(tuple(range(io3[0]+1,io3[1])))
+            elif len(df2)<12 and abs(io[0]-io[1])>2 and abs(io[0]-io[1])<5 and len(den)>1 and den[0]>den[1]:
+                io2=list(tuple(range(io[0]+1,io[1])))
+#%
+    if io2!=[] and len(io2)!=0:
+        if len(den)>1 and den[1]<den[0] and np.max(den)==den[0] and io3[0:3]==[2,4,6]:
+            aac=[]
+            aac=io2[0]
+            del(io2)
+            io2=[]
+            io2=[aac]
+        #%
+    if io2!=[] and len(io2)!=0 and len(den)>1 and abs(np.max(den[0:3])-den[0])<6 and io[-2]<18 and io3[0:3]==[2,4,6]:
+        aac=[]
+        aac=io2[0]
+        del(io2)
+        io2=[]
+        io2=[aac] 
+        #%
     if io2==[]:
         if len(io3)>0:
             if len(io3)==2:
@@ -805,13 +876,14 @@ def words2(df2):
             if len(io3)==1:
                 if np.sum(io[0:3])<=6:
                     io2=list(tuple(range(io[2]+1,io[3])))
+                    #%
     if io2!=[]:
         if io2[0]==io3[0]:
-            if len(io3)>=len(io) and len(io3)>3 and len(io2)>1:
+            if len(io3)>=len(io) and len(io3)>3 and len(io2)>1 and len(df2)>35:
                 io2.pop(0)
             
 #        else:
-#%            io2=[0,len(df)]
+#%           io2=[0,len(df)]
 #    if io2==[]:
     x=io[0:3]
     y=[2,2,4]
@@ -841,63 +913,131 @@ def words2(df2):
             else:
                 pass
             #%
+    if len(io2)<len(io3) and len(df2)<9 and len(io2)<1:
+        io2=[io3[0]+1]
+    elif len(io2)<len(io3) and len(df2)<9 and len(io2)>0 and len(io2)<2:
+        io2.append(io3[1])
+    io2=list(np.sort(io2))
+    #%
+    if len(io2)>1 and len(io2)<3:
+        ipi=[]
+        ipi=io2
+        io2=list(tuple(range(ipi[0],ipi[1]+1)))
+        #%
+#        list(tuple(range(io2[0],io2[1]+1)))
+    #%
     if len(den)>2:
         if den[2]>den[1]:
             if den[1]>den[0]:
-                if len(io2)==1:
+                if len(den)>3 and den[3]>den[2] and len(io2)==1 and np.sum(io)>49:
                     io2=[]
                     io2=[io3[1]+1]
-                   #% 
+                    #%
+                elif len(den)>3 and den[3]<den[2] and len(io2)==1:
+                    pass 
+                #%
         elif den[1]>den[0]:
             if len(io2)==1:
                 if len(io)<8:
-                    if len(io3)+2>=len(io):
+                    if len(io3)+2>=len(io) and io2!=[5]:
                         io2=[]
                         io2=[io3[0]+1]
+                        #%
         elif len(den)==2:
             if den[1]>den[0]:
                 if len(io3)==3:
                     io2=[]
                     io2=[io3[1]+1,io3[-1]-1]
                     #%
+        elif den[1]<den[0] and np.max(den)==den[0] and abs(io3[0]-io3[1])<20 and len(df2)<9:
+            aac=[]
+            aac=io2[0]
+            del(io2)
+            io2=[]
+            io2=[aac]
+            
+            
+                    #%
     elif len(den)==2:
         if den[1]>den[0]:
-            if len(io2)==1:
+            if len(io2)==1 and len(df2)>8:
                 io2=[]
                 io2=list(tuple(range(io3[1]+1,io3[-1]-1)))
+                #%
+    if len(df2)<5 and len(io2)>1:
+        io2=[io2[0]]
+    elif len(df2)<9 and 'Quality of written English' in df2.iloc[4] and 'Reviewer' not in df2.iloc[1]:
+        io2=[io2[0]]
+    elif len(df2)<9 and "Reviewer's report" in df2.iloc[4] and 'Quality of written English' not in df2.iloc[4]:
+        if len(df2)==8:
+            io2=[5,6,7]
+    elif len(df2)<10 and len(io3)>2 and np.max(den)!=den[0] and 'Reviewer' in df2.iloc[3]:
+        io2=[4,5]
+    elif io2==[] and len(io3)>6 and len(df2)<29 and 'Are the methods appropriate and well described?' in df2.iloc[4] and len(df2.iloc[4])>47:
+        io2=[3,4]
+    elif io2==[] and len(io3)>6 and len(df2)<29 and 'Are the methods appropriate and well described?' in df2.iloc[4] and len(df2.iloc[4])<48:
+        io2=[3]
+#    elif len(df2)<9 and 'Quality of written English' in df2.iloc[4] and 'Reviewer' in df2.iloc[1]:
         
-        
-#    else:
-#        if len(io2)==1:
-            
-            
-        
-#%
+        #%
 #%https://www.geeksforgeeks.org/python-program-to-count-words-in-a-sentence/    
     res=[]
+    ras=[]
+#    a=[]
 #https://stackoverflow.com/questions/44284297/python-regex-keep-alphanumeric-but-remove-numeric
 #'https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7992 https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7993'
-
+#    import string
     if len(io2)>1:
         for i in io2:
-            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[i]))))
+            if len(io2)>2:
+                res.append(len(df2.iloc[i].split(' ')))
+#            res.append(len(re.findall('\x20', df2.iloc[i])))
+            #Do not make your life hard, just count the 'words' separated by (one) empty space..
+#            https://www.w3resource.com/python-exercises/string/python-data-type-string-exercise-12.php
+#                    len(df2.iloc[i].split()))
+            elif len(io2)<3 and abs(len(df2.iloc[i].split(' '))-len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[i]))))>3 and io2[1]<5:
+                res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[i]))))
+            else:
+                res.append(len(df2.iloc[i].split(' ')))
+                
+#            ras.append(int(''.join(list(filter(df2.iloc[i].isdigit(df2.iloc[i]))))))
+            ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[i])))
+            #%
     elif len(io2)==1:
         if io2[0]==3:
-            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[3]))))
+            if 'Quality of written English' in df2.iloc[3] or 'Are the methods appropriate and well described?' in df2.iloc[3]:
+                res=[]
+                res.append(0)
+            elif 'Are the methods appropriate and well described?' not in df2.iloc[3]:
+                res.append(len(df2.iloc[3].split(' ')))
+    #            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[3]))))
+                ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[3])))
+            elif 'Quality of written English' not in df2.iloc[3]:
+                res.append(len(df2.iloc[3].split(' ')))
+                ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[3])))
+            else:
+                pass
+                #%
         elif io2[0]==5:
             if 'Quality of written English' not in df2.iloc[5]:
-                res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[5]))))
+                res.append(len(df2.iloc[5].split(' ')))
+#                res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[5]))))
+                ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[5])))
             else:
                 res=[]
                 res.append(0)
         elif io2[0]==6:
             if 'Please indicate the quality of language in the manuscript:' not in df2.iloc[6]:
-                res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[6]))))
+                res.append(len(df2.iloc[5].split(' ')))
+#                res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[6]))))
+                ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[6])))
             else:
                 res=[]
                 res.append(0)
         else:
-            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[io2[0]]))))
+#            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[io2[0]]))))
+            res.append(len(df2.iloc[io2[0]].split(' ')))
+            ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[io2[0]])))
             #%
     if len(res)==1:
         if res[0]==1:
@@ -910,7 +1050,9 @@ def words2(df2):
                             if 'No specific comment!' not in df2.iloc[3]:
                                 if 'a file was attached' not in df2.iloc[3] and io2[0]!=3:
                                     res=[]
-                                    res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[io3[1]+1]))))
+                                    res.append(len(df2.iloc[io3[1]+1].split(' ')))
+#                                    res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[io3[1]+1]))))
+                                    ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', df2.iloc[io3[1]+1])))
 #                        elif io2[0]==3:
 #                            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[3]))))
             #%
@@ -926,19 +1068,40 @@ def words2(df2):
         appendix2.append('no')
     elif appendix!=[]:
         appendix2.append('attached')
-    if " Reviewer" in name[0]: #huomaa heittomerkki
-        name[0]=name[0].split(" Reviewer")[0]
-    else:
-        pass
+    if name!=[]:
+        if " Reviewer" in name[0]: #huomaa heittomerkki
+            name[0]=name[0].split(" Reviewer")[0]
+        else:
+            pass
     #%
     if len(name)>0:
         name=name[0][1:(len(name[0])-1)]
     #%
     if len(date)>0:
         date=date[0][1:(len(date[0]))]
-#    print(np.sum(res))
-        #%
-    return  np.sum(res), appendix2, date, name
+        
+    tot=np.sum(res)
+    pat=np.sum(ras)
+    #%
+    if pat>4 and tot>49 and tot<1700:
+        if pat<26 and pat>7:
+            tot=tot+int(pat/1.5)
+        elif pat>25:
+            tot=tot+int(pat/60)+17
+        elif pat<8:
+            tot=tot+pat
+    elif pat<5 and tot<50:
+        tot=tot+int(pat/2+0.99)
+            
+    elif pat>37 and tot>1699:
+        tot=tot+int(pat/60)+5
+    elif pat<38 and pat>4 and tot>1699:
+        tot=tot+int(pat/1.5+7.99)
+    elif pat<5 and pat>-1 and tot>1699:
+        tot=tot+int(pat/1.5+1.999)
+#%
+        
+    return  tot, appendix2, date, name, pat
 
 #% Calculating all the papers in a loop:
 #file_count(all_files2): 
@@ -980,6 +1143,7 @@ count2=[]
 count3=[]
 counta=[]  
 countb=[] 
+tee=[]
 for i in range(len(dfe)):
 #    print(i)
     count.append(words2(dfe[i])[0]) #Yes!! Got it!!
@@ -989,6 +1153,7 @@ for i in range(len(dfe)):
     count3.append(words2(dfe[i])[3]) #dfe[i][3]), name
     counta.append(words2(dfe[i])[2]) #options: words2(dfe[i])[1], dfe[i][0:5], date
     countb.append(words2(dfe[i])[1])
+    tee.append(words2(dfe[i])[4])
 #%Because of these dependencies, you need to do these phases one-by-one
 #Title, name, date:
 #date=[]
@@ -1076,7 +1241,7 @@ title_ok2=pd.DataFrame(tok2)
 date_ok=pd.DataFrame(date2)
 name_ok=pd.DataFrame(name2) 
 countb=pd.DataFrame(countb)   
-#%   
+#%
 #%Muutetaan naps_tot dataframeks:
 frames = [count_ok, title_ok2, name_ok, date_ok, panax, countb, tnz]
 tot_count = pd.concat(frames, axis=1) #note the axis! and drop indeces..
@@ -1128,7 +1293,7 @@ ntg4.index=nn2
 ntg4=pd.DataFrame(ntg4[0])
 tot_count['Link to PDF of Reviewer']=ntg4 #.loc[0:329,:]
 #%
-#%https://cmdlinetips.com/2018/03/how-to-change-column-names-and-row-indexes-in-pandas/
+#%https://cmdlinetips.com/2020/03/how-to-change-column-names-and-row-indexes-in-pandas/
 #https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html
 #% What is needed from BMC (in relatively) right order:
 tot_count["Reviewer's Title"]='nan' #if something is not available, mark it with 'nan'
@@ -1149,5 +1314,34 @@ dfa = tot_count[tot_counta]
 #%If something/some review clearly wrong, e.g. here it is completely missing:
 #dfa=dfa[dfa['Reviewer Name']!='Benjamin D Horn']
 #%
-dfa.to_csv('BMC2018_all_available_ok_tikka12620.csv',index=False)
+dfa.to_csv('BMC2020_all_available_ok_tikka16720_v1.csv',index=False)
 #https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
+dfa2=dfa
+aa=dfa2['Review Word Count']<27
+bb=dfa2['Attachments']=='attached'
+cc= aa & bb
+dd= ~cc
+#https://stackoverflow.com/questions/15998188/how-can-i-obtain-the-element-wise-logical-not-of-a-pandas-series
+#if dfa2['Attachments']=='attached' or dfa2['Review Word Count']<5
+dfa2=dfa2[dd]
+#%%
+dfa2=dfa2[dfa2['Review Word Count']!=0]
+#%%
+dfa2=dfa2[dfa2['Review Word Count']!=[]]
+#%%Check separately all below 50 if problems, e.g. 'attached' or 'rev2' while it should be 1 (or 0)
+#dfa2=dfa2[dfa2['Review Word Count']!=28]
+#np.mean(dfa['Review Word Count'])
+#np.std(dfa['Review Word Count'])
+#%np.max(tee)
+#np.mean(tee)
+#np.std(tee)
+import pandas as pd
+f =  pd.read_csv('2008a.txt', header=None)
+#https://stackoverflow.com/questions/21546739/load-data-from-txt-with-pandas
+#https://www.quora.com/How-do-I-open-a-URL-in-Google-Chrome-in-new-tab-using-Python
+import webbrowser
+for i in range(len(f)):
+    url = f.iloc[i][0]
+    webbrowser.open_new_tab(url)
+#%%
+dfa2.to_csv('BMC2020_all_available_ok_tikka16720_v2.csv',index=False)
