@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 23 14:16:40 2020
+Created on Thu Jan 23 14:16:40 2009
 
 @author: pauli
 """
 # Task 1.
 
 # Extract the following journal peer review data for each (available) article from 
-# BMJ, PLOS Medicine, and BMC between January 15 2020 and January 14 2020, and use also google searches: 
+# BMJ, PLOS Medicine, and BMC between January 15 2009 and January 14 2009, and use also google searches: 
 
 #(1) The quality of preventive care for pre-school aged children in Australian general practice
 #(2) Louise K. Willes
-#(3) 6.12.2020
+#(3) 6.12.2009
 #(4) 3 reviewers
 #(5) Dagmar Haller 
 #(6) (366 words), 
@@ -47,16 +47,16 @@ from statistics import mean
 #%%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
-#For 2020..   (check th number of these..) 
-urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=18&searchType=&tab=keyword'
-urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=2'
-urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=3'
-urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=4'
+#For 2009..   (check th number of these..) 
+urln_all='https://bmcmedicine.biomedcentral.com/articles?query=&volume=7&searchType=&tab=keyword'
+urln_all2='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=7&page=2'
+#urln_all3='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=3'
+#urln_all4='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=18&page=4'
 #urln_all5='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=5'
 #urln_all6='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=6'
 #urln_all7='https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDate&volume=9&page=7'
 #%%Here all combined..
-utot=[urln_all, urln_all2, urln_all3, urln_all4]#, urln_all5, urln_all6]#, urln_all7]
+utot=[urln_all, urln_all2]#, urln_all3, urln_all4]#, urln_all5, urln_all6]#, urln_all7]
 soupn=[]
 responsen=[]
 one_a_tagn=[]
@@ -230,9 +230,9 @@ for i in range(len(orig_url)):
     datee_aut2.append(date(url=orig_url.iloc[i,0]))
 #%Datee2 should be saved..(dates, authors and titles without order)
 dat=pd.DataFrame(datee_aut2)
-dat.to_csv('dates_authors_titles_BMC2020_tikka29520.csv') #you can use this as datee_aut2 in future  
+dat.to_csv('dates_authors_titles_BMC2009_tikka29520.csv') #you can use this as datee_aut2 in future  
 #datee_aut2=[]
-#datee_aut2=pd.read_csv("dates_authors_titles_BMC2020_tikka29520.csv")
+#datee_aut2=pd.read_csv("dates_authors_titles_BMC2009_tikka29520.csv")
 #datee_aut2=datee_aut2.iloc[:,1:4] #there was an extrac column   
 #%This sorting must go hand in hand with orirg_url and download_url:
 datee_aut2=pd.DataFrame(datee_aut2)
@@ -259,12 +259,12 @@ auxif2=pd.concat(auxif, axis=1)
 #ok=list(OrderedDict.fromkeys(datee_aut2))
 ##%% Saving
 #da_au=pd.DataFrame(ok)
-#da_au.to_csv('dates and authors_BMC2020_tikka15420.csv')
+#da_au.to_csv('dates and authors_BMC2009_tikka15420.csv')
 ##%% Loading:
 #da_au=[]
-#da_au=pd.read_csv("dates and authors_BMC2020_tikka15420.csv")
+#da_au=pd.read_csv("dates and authors_BMC2009_tikka15420.csv")
 #da_au=da_au.iloc[:,1:4] #there was an extrac column
-#%This loop seem to be working below (24.1.2020), This takes 10 min, before enter, check if you already have what you need
+#%This loop seem to be working below (24.1.2009), This takes 10 min, before enter, check if you already have what you need
 tinka=[]
 linkaas=[]
 indaas=[]
@@ -280,7 +280,7 @@ for i in range(0,len(auxif2)):
     ind=[]
     for n in range(0, len(link)):  
         str = link[n]
-        match = re.search(r'Report_V', str)#in year 2020 this changes to V1 (or V0?), 2020 this changes to V2
+        match = re.search(r'Report_V', str)#in year 2009 this changes to V1 (or V0?), 2009 this changes to V2
         if match:
             ind.append(n)   
     linka=[]
@@ -294,16 +294,16 @@ for i in range(0,len(auxif2)):
 #np.sum(rint)    
 #%The previous was also time consuming (5 min), so better save:
 #linkaase=pd.DataFrame(linkaas)
-#linkaase.to_csv('links_BMC2020_tikka17420.csv')   
+#linkaase.to_csv('links_BMC2009_tikka17420.csv')   
 #indaase=pd.DataFrame(indaas)
-#indaase.to_csv('indeces_BMC2020_tikka17420.csv')
+#indaase.to_csv('indeces_BMC2009_tikka17420.csv')
 #linkaas=[]
-#linkaas=pd.read_csv("links_BMC2020_tikka17420.csv")
+#linkaas=pd.read_csv("links_BMC2009_tikka17420.csv")
 #indaas=[]
-#indaas=pd.read_csv("indeces_BMC2020_tikka17420.csv") 
+#indaas=pd.read_csv("indeces_BMC2009_tikka17420.csv") 
 ##%% Loading:
 #da_au=[]
-#da_au=pd.read_csv("dates and authors_BMC2020_tikka15420.csv")
+#da_au=pd.read_csv("dates and authors_BMC2009_tikka15420.csv")
 #da_au=da_au.iloc[:,1:4] #there was an extrac column 
 #% This is why I like to be an engineer:
 #%Let's take all the correct links first:
@@ -381,8 +381,8 @@ naps_tot=naps00+naps11 #test naps_tot for the next file name..
 #for i in range(len(naps_tot)):
 #    o.append(np.str(naps_tot[i][1]))
 #    urllib.request.urlretrieve(naps_tot[i][0], \
-#                               filename='C:\\python\\BMC2020\\' +o[i]+' '+naps_tot[i][0][-37:])  
-#%you may need to check the range of naps_tot, e.g. from -39 to -37 in year 2020
+#                               filename='C:\\python\\BMC2009\\' +o[i]+' '+naps_tot[i][0][-37:])  
+#%you may need to check the range of naps_tot, e.g. from -39 to -37 in year 2009
 #https://www.digitalocean.com/community/tutorials/how-to-convert-data-types-in-python-3  
 #%There are two ways to do this. Either converge all the files as one, or import them separately as a big pands frame.
 # The method one:
@@ -399,7 +399,7 @@ naps_tot=naps00+naps11 #test naps_tot for the next file name..
 #https://www.guru99.com/python-regular-expressions-complete-tutorial.html#3
 #The method two: 
 #%Now I need to do I loop for all files, and save the results
-directory="C:\python\BMC2020\*.docx"
+directory="C:\python\BMC2009\*.docx"
 import glob
 dataframes = []
 all_files2=[]
@@ -445,9 +445,9 @@ for i in range(len(naps_tot)):
 tnz=pd.DataFrame(page_count)
             #%
 #dfee=pd.DataFrame(dfe)
-#dfee.to_csv('BMC2020_data_tikka1620.csv')
+#dfee.to_csv('BMC2009_data_tikka1620.csv')
 ##%%
-#total=pd.read_csv("BMC2020_data_tikka1620.csv")
+#total=pd.read_csv("BMC2009_data_tikka1620.csv")
 ##total=[]
 #total=total.iloc[:,1:]
 #dfe=total.values.tolist()
@@ -1293,7 +1293,7 @@ ntg4.index=nn2
 ntg4=pd.DataFrame(ntg4[0])
 tot_count['Link to PDF of Reviewer']=ntg4 #.loc[0:329,:]
 #%
-#%https://cmdlinetips.com/2020/03/how-to-change-column-names-and-row-indexes-in-pandas/
+#%https://cmdlinetips.com/2009/03/how-to-change-column-names-and-row-indexes-in-pandas/
 #https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html
 #% What is needed from BMC (in relatively) right order:
 tot_count["Reviewer's Title"]='nan' #if something is not available, mark it with 'nan'
@@ -1314,7 +1314,7 @@ dfa = tot_count[tot_counta]
 #%If something/some review clearly wrong, e.g. here it is completely missing:
 #dfa=dfa[dfa['Reviewer Name']!='Benjamin D Horn']
 #%
-dfa.to_csv('BMC2020_all_available_ok_tikka16720_v1.csv',index=False)
+dfa.to_csv('BMC2009_all_available_ok_tikka16720_v1.csv',index=False)
 #https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
 dfa2=dfa
 aa=dfa2['Review Word Count']<27
@@ -1336,7 +1336,7 @@ dfa2=dfa2[dfa2['Review Word Count']!=[]]
 #np.mean(tee)
 #np.std(tee)
 import pandas as pd
-f =  pd.read_csv('2008a.txt', header=None)
+f =  pd.read_csv('2009a.txt', header=None)
 #https://stackoverflow.com/questions/21546739/load-data-from-txt-with-pandas
 #https://www.quora.com/How-do-I-open-a-URL-in-Google-Chrome-in-new-tab-using-Python
 import webbrowser
@@ -1344,4 +1344,4 @@ for i in range(len(f)):
     url = f.iloc[i][0]
     webbrowser.open_new_tab(url)
 #%%
-dfa2.to_csv('BMC2020_all_available_ok_tikka16720_v2.csv',index=False)
+dfa2.to_csv('BMC2009_all_available_ok_tikka20720_v2.csv',index=False)
