@@ -1350,7 +1350,26 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif pat[i]<4 and tot[i]>39:
             tot[i]=tot[i]+pat[i]
                 #%
-    
+#    for i in range(len(tot)):
+#        tot[i]=int(tot[i])
+#        if tot[i]>=950:
+#            tot[i]=tot[i]-int(0.02*tot[i])-10
+#        tot[i]>=2500 and tot[i]<3300:
+#            if tot[i]==2542:
+#                tot[i]=tot[i]-int(int((tot[i]/2435-1)*tot[i]))+4
+#            elif tot[i]!=2542:
+#                tot[i]=tot[i]-int(0.044*tot[i])+40
+#        elif tot[i]>=1525 and tot[i]!=2435 and tot[i]<2500:
+#            tot[i]=tot[i]-int(0.045*tot[0])+10
+#        elif tot[i]>=1330 and tot[i]<1525:
+#            tot[i]=tot[i]-int(0.02*tot[0])-10
+#        elif tot[i]>=950 and tot[i]<1330:
+#            tot[i]=tot[i]-int(0.025*tot[0])
+#        elif tot[i]>3229 and tot[i]<4000:
+#            tot[i]=tot[i]-int(0.03*tot[i])
+            #% Members of the committee
+
+        
         #%
     return tot, Reviewer, Title, Institution, Article2, Designation, separate2 
 #%Test:
