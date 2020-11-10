@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 13 10:16:40 2018
+Created on Thu May 13 10:16:40 2018 (this version: 5.11.20, Tikka)
 
 @author: pauli
 """
@@ -43,7 +43,6 @@ import string
 #    taxi.append([x for x in totala[i] if x == x])
 #dtok=[]
 #part_list=taxi 
-#%
 #Or Check tnon below for loading..
 #part_list=[]
 #total=pd.read_csv("all_categores_2018_23620_v1.csv")
@@ -84,7 +83,6 @@ import string
 #for i in range(len(partlist2)):
 #    partlist2[i][5]=tn3[i]
 #part_list=part_list[0:49]  
-#%
 #%https://developers.google.com/edu/python/regular-expressions
 #https://docs.python.org/3/library/urllib.request.html
 #https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
@@ -122,7 +120,6 @@ for i in range(0,len(utot)):
     responsen.append(requests.get(utot[i]))
     soupn.append(BeautifulSoup(responsen[i].text, 'html.parser'))
     one_a_tagn.append(soupn[i].findAll('a')) #ok
-    #%
 nn=[]    
 nt=[]
 for j in range(len(soupn)):
@@ -132,7 +129,6 @@ for j in range(len(soupn)):
         elif soupn[j].findAll("h3")[i].string=='News':
             nt.append([j,i])
 #          https://stackoverflow.com/questions/22003302/beautiful-soup-just-get-the-value-inside-the-tag
-            #%
 test_list = list(range(0, 52))    
 popia=list(set(test_list).difference(nn))
 #%I should find the indeces of the missing four..
@@ -140,7 +136,6 @@ popia=list(set(test_list).difference(nn))
 #utot2=np.delete(utot, popia).tolist()
 utot2=list(np.sort(utot)) #2018 required this solution
 #%For saving and loading:
-
 utot22=pd.DataFrame(utot2)
 utot22.to_csv('weekly_bmj2018_links_tikka23620.csv')
 #utot2=pd.DataFrame(utot)
@@ -248,7 +243,6 @@ totali.to_csv('all_total_BMJ_links_2018_23620.csv')
 #%I am guess that I need similarly 'too loops' to get this solved.
 #The first:
 def peer_loop(total):
-    #%
     n=0
     spana3=[]
     spana3=total
@@ -298,8 +292,7 @@ def peer_loop(total):
             if nop!=[]:
                 cura=cura[0:nop[0]]
             else:
-                cura=cura[0:-1]
-                
+                cura=cura[0:-1]              
             for i in range(len(cura)):
                 if len(cura[i].split(', '))>1:
                     cura[i]=cura[i].split(', ')[1]
@@ -307,15 +300,12 @@ def peer_loop(total):
             pura.append(cura)
         else:
             pass
-#            pura('nan')
-    #%
+
     return pura
 #%Peer loop for the peer pdf:
 #%First the peer links:
 #(Why the below procedure changes totol to total2 by-fly as well, not needed?)  
-#%
 total2=total
-#%
 total3=total2
 for i in range(len(total3)):
     for j in range(len(total3[i])):
@@ -326,7 +316,6 @@ for i in range(len(tot)):
     total.append([x for x in tot[i] if str(x) != 'nan'])    
 #%Then the function:
 def peer_loop3(total2): 
-    #%
     n=0
     spana3=[]
     soupn1=[]
@@ -345,7 +334,6 @@ def peer_loop3(total2):
                 alepa=[]
                 for link in soup.find_all('a', href=True):
                     alepa.append(link['href'])
-        
                 p=[]
                 pe=[]
                 pen=[]
@@ -388,17 +376,14 @@ for i in range(len(total)):
 for i in range(len(tn)): 
     for j in range(len(tn[i])):
         tn[i][j]=', '.join(tn[i][j])
- #%
 tna=pd.DataFrame(tn)
 tna.to_csv('writers_BMJ_2018_23620.csv')
-
 #%Depending what form you get the data saved, you may need something like the above to load it (i.e. tnon)..
 #%These loops are relatively time consuming (tn, and tn1, around 15min/each so better save..)
 tn1=[]
 i=0
 for i in range(len(total2)):
-    tn1.append(peer_loop3(total2[i])) #if you go just numbers, while loop is also possible
-    
+    tn1.append(peer_loop3(total2[i])) #if you go just numbers, while loop is also possible  
 #%Again for loading and saving:
 tnn=pd.DataFrame(tn1)
 tnn.to_csv('all_total_pdf_links_2018_23620.csv')
@@ -471,7 +456,6 @@ dt4=[]
 dt4=pd.concat([pd.DataFrame(part_list[i][5], columns=['Link to PDF of Review']) for i in range(len(total))], ignore_index=True)
 dt5=[]
 dt5=pd.concat([pd.DataFrame(part_list[i][6], columns=['Page Count']) for i in range(len(total))], ignore_index=True)
-
 #%Check the range
 tot_list=[]
 final_matrix=[]
@@ -493,7 +477,6 @@ final_matrix=final_matrix[final_matrix['Page Count'] !=0]
 #https://stackoverflow.com/questions/34162625/remove-rows-with-empty-lists-from-pandas-data-frame
 #next find out the NA etc values in final matrix
 #final_matrix=final_matrix.reset_index()
-
 #%For saving and loading:
 #tnp=pd.DataFrame(final_matrix)
 #tnp.to_csv('all_for_bmj_review2018_26520tikka.csv') #one needs to be carefull with these dates when loading
@@ -527,7 +510,6 @@ for i in range(len(final_matrix)):
 #%Now I need to do I loop for all files, and save the results
 directory="C:\python\BMJ2018\*.docx"
 import glob
-
 dataframes = []
 all_files2=(glob.glob(directory))
 
@@ -540,7 +522,6 @@ for i in range(len(all_files2)):
 def totis(x=all_files2[22]):    #check the length of all_files2 before giving value to it e.g. [122]
     import docx2txt
     result=[]
-#    x=all_files2[122]
     result = docx2txt.process(x)
     #%This worked:
     #https://stackoverflow.com/questions/13169725/how-to-convert-a-string-that-has-newline-characters-in-it-into-a-list-in-python
@@ -562,7 +543,6 @@ def totis(x=all_files2[22]):    #check the length of all_files2 before giving va
     #% The pandas are better to handle data (in functions) than list of lists (according to my experience):
     df=pd.DataFrame(list2)
     return df
-
 df_tot=[]
 for i in range(len(all_files2)):
     df_tot.append(totis(x=all_files2[i]))
@@ -576,18 +556,14 @@ dtok=[]
 for i in range(len(df_tot)):
     dtok.append(df_tot[i].loc[:,0])          
 #%For saving and loading:
-    #%
 #dtok2=pd.DataFrame(dtok)
 #dtok2.to_csv('essential_for_bmj_2018_review_23620tikka.csv') #it is better to start here than partlist, 
 #if your word count function needs modification due data: 
-    #%
 #l=[]
 #for i in range(len(desig)):
 #    if int(desig[i][1])==20:
 #        l.append([i,desig[i][1]])
-##        #%%
 ##        Godfrey P. Oakley, Jr. 
-#%
 #l=[]
 #for i in range(len(dtok)):
 #    for j in range(len(dtok[i])):
@@ -636,7 +612,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         match2 = bool(re.search(r'Recommendation:', stra))
         match2n= bool(re.search(r'Comments:', stra))
         match2na= bool(re.search(r'Comments from Reviewers', stra))
-        
         #I need to change these values..
         match2a = bool(re.search(r'Detailed comments from the meeting:', stra)) #I need to change these values..
         match2b = bool(re.search(r'Our statistician made the following comments', stra)) 
@@ -646,7 +621,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         mx4a   = bool(re.search(r'Institution: ', stra))
         match5 = bool(re.search(r'Information for submitting a revision', stra))
         match6 = bool(re.search(r'Funds', stra))
-        
         if match1==True:
             start.append(i)
         elif match2n==True:
@@ -661,13 +635,11 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif match2c==True:
             if start==[]:
                 start.append(i)
-#            'Reviewer'
         elif match2==True:
             if 'Patient Reviewer' in stra:
                 pass
             elif 'Patient Reviewer' not in stra:
                 start.append(i)
-      
         elif match2a==True:
             if start==[]:
                 start.append(i)
@@ -683,7 +655,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif i<int(len(dx)/10) and len(dx)>290:
             if 'Reviewer: ' in stra:
                 start.append(i)
-                #%
         if match3==True:
             end.append(i)
         elif match4==True:
@@ -695,7 +666,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif match5==True:
             if end!=[]:
                 end.append(i)
-
         elif 'Please enter your name:' in stra:
             if end==[]:
                 panaa.append(i)
@@ -705,12 +675,10 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 panaa.append(i)
         elif 'Yours sincerely, ' in stra:
             if end==[]:
-                panaa.append(i)
-                
+                panaa.append(i)               
         if match4:
             sup.append(i)
-            supa.append([dx[i].split(": ")[1].split(" Job Title")[0],i])
-           
+            supa.append([dx[i].split(": ")[1].split(" Job Title")[0],i])          
         if 'Job Title:' in stra:
             ss.append(i)
             a=dx[i].split("Job Title: ")[1] ==['']
@@ -727,12 +695,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 sx.append(dx[i].split("Please enter your name: ")[1].split("Job Title")[0])
         if  "chair" in stra and i<30 and len(dx)>91 and 'Members of the committee were: ' in \
         dx[i] or "Chair" in stra and i<30 and len(dx)>91 and 'Members of the committee were: ' in dx[i]:
-#            oh.append(i)
             sx.append([dx[i].split("Members of the committee were: ")[1]])
         elif "chair" in stra and i<30 and len(dx)>91 or "Chair" in stra and i<30 and len(dx)>91:
             sx.append([dx[i]])
-            
-#%
         if 'Institution:' in stra:
             ssx.append(dx[i].split('Institution: ')[1]) 
         if 'Job Title:' in stra:
@@ -744,21 +709,17 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             end.append(int(len(dx)*0.98))
         if 'entitled "' in stra:
             if i<int(len(dx)*0.2):
-                Article.append((dx[i].split('entitled "')[1]).split('"')[0])
-                
+                Article.append((dx[i].split('entitled "')[1]).split('"')[0])                
         for i in range(len(email)):
             if email[i] in stra:
                 separate.append('attached')
-           
-
     for i in range(len(ssa)):
         if 'Institution: ' not in ssa[i][0]:
             pass
         elif 'Institution: ' in ssa[i][0]:
             ssn.append(ssa[i])
         elif 'Institution: ' not in stra:
-            ssn.append('nan')
-            
+            ssn.append('nan')          
     for i in range(len(ssn)):  
         if ssn[i][0].split("Institution: ")[1] ==['']:
             supass.append([ssn[i].split(' Reimbursement')[0],ssn[i][1]])
@@ -766,11 +727,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             supass.append([ssn[i][0].split("Institution: ")[1].split(' Reimbursement')[0], ssn[i][1]])
         elif ssn[i][0].split("Institution: ")[0] ==['']:
             supass.append(['nan',ssn[i][1]])
-            #%
     if len(end)>2 and len(start)>2 and end[0]>start[0] and end[0]>start[1] and abs(start[0]-start[1])>28:
         end.append(start[1])
     end=list(np.sort(end)) 
-    #%
     if start==[]:
         if len(nana)!=0:
             start.append(nana[0])
@@ -779,7 +738,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     if start==[]:
         start.append(0)
     if end==[]:
-#        end=start[1:]
         if len(panaa)!=0:
             if len(end)>0:
                 if panaa[0]>end[0]:
@@ -788,21 +746,17 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     end.append(int(len(dx)*0.98))  
             else:
                 pass
-            #%
         elif len(panaa)==0:
             end.append(int(len(dx)*0.95)+1) 
-            #%
     if end==[]:
         end=start[1:]
         end.append(int(len(dx)*0.98))
-   
     #%breaking point for start
     i=0
     at=[]
     for i in range(len(start)):
         if abs(start[i]-start[i-1])<3 or abs(start[i]-start[i-1])<4 and len(start)>5:
             at.append(i)
-            #%
     if len(start)>2:
         if at==[1, 2]:
             start=start[2:]
@@ -815,28 +769,19 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         if len(end)!=len(start)*3:
             if abs(end[i]-end[i-1])<6 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
                 at.append(i)
-#        elif len(end)==len(start)*2:
-#            if abs(end[i]-end[i-1])<5 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
-#                at.append(i)
-#            
-            #%
     if len(end)>2:
         if start[0]==end[1] and (len(end)-2)==len(start) and at[0]==1:
             end=end[2:]
         else:
             end = [j for i, j in enumerate(end) if i not in at]
-            #%
     if len(start)>4 and len(start)-1==len(end) and start[1]<end[0] and start[1]<29:
         start=start[1:]
-        
-        #%
     if len(end)>1 and len(start)>1:
         if end[-1]>160 and start[1]==end[0] and start[-1]==end[-2]:
             end[0]=int(end[0]*0.8)
             end[1]=int(end[1]*0.87)
             for i in range(2,len(end)-1):
                 end[i]=int(end[i]*0.90)
-        #%
     if len(end)-1==len(start) and len(start)>4 and end[-1]>end[-2] and end[-2]>start[-1]:
         end=end[0:-1]
     if len(end)+1==len(start) and len(start)>3 and start[-1]>start[-2] and start[-1]>end[-2] and abs(start[-1]-start[-2])<4:
@@ -844,8 +789,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     if len(start)==len(end) and len(end)==6 and len(dx)>200 and start[1]<end[0] and start[2]<end[1] and start[-1]<end[-2] and abs(end[-1]-end[-2])<9:
         end.insert(0,start[1])
         end.pop(-1)
-    #%
-    
     if len(end)>3 and len(start)>1 and (len(end)-1)==len(start) and end[-2]<start[-1] and end[-3]<start[-2] and len(dx)<206 and start[0]>23 and end[0]<41:
         at=[]
         for i in range(len(end)):
@@ -853,15 +796,13 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 if abs(end[i]-end[i-1])<7 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
                     at.append(i)
         end = [j for i, j in enumerate(end) if i not in at]
-    #%
     if len(end)>2 and len(start)>1 and (len(end)-1)==len(start) and end[-2]<start[-1] and end[-3]<start[-2] and len(dx)>205 and start[0]>23:
         at=[]
         for i in range(len(end)):
             if len(end)!=len(start)*3:
                 if abs(end[i]-end[i-1])<7 and len(end)!=len(start)*2 and abs(end[0]-end[-1])>14 and abs(np.median(end)-end[-1])>8:
                     at.append(i)
-        end = [j for i, j in enumerate(end) if i not in at]
-        
+        end = [j for i, j in enumerate(end) if i not in at]        
     if len(end)>2 and len(start)>2 and end[0]>start[2] and (len(end)-1)==len(start) and len(dx)>80 and start[0]>16:
         at=[]
         for i in range(len(end)):
@@ -870,22 +811,14 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     at.append(i)
         end = [j for i, j in enumerate(end) if i not in at]
         if len(sx)==len(end) and abs(start[0]-start[2])<11 and start[0]>16 and len(dx)>80 and start[-1]>60 and end[-1]>70:
-            start=start[2:]
-            #%
-            
+            start=start[2:]           
     if len(end)==len(start) and len(start)>2 and end[0]>start[1] and end[-2]>start[-1] \
     and end[1]>start[2] and abs(end[0]-end[1])>50 and len(dx)>180 and start[0]>10 and abs(start[0]-start[2])<45:
         end.append(start[1]-1)
         end=np.sort(end)
         end=list(end)
-        #%
         if len(dx)>180 and abs(end[-1]-end[-2])<10 and end[-2]>start[-1] and abs(end[-1]-len(dx))<34:
             end.pop(-1)
-
-
-            
-#        end.pop(-3)
-        
 #% ok breaking point
 #    https://stackoverflow.com/questions/627435/how-to-remove-an-element-from-a-list-by-index    
 #%here are the exceptions
@@ -895,7 +828,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     endd=[]
     if len(end)>4 and (len(end)-1)==len(start):
         end=end[0:-1]
-        #%
     if len(start)>len(end) and end[-1]>start[-1] and abs(start[-1]-start[-2])<6 and len(end)>2:
         start=start[0:-1]
     at=[]
@@ -904,7 +836,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             if abs(start[i]-start[i-1])<4:
                 at.append(i) 
         start = [j for i, j in enumerate(start) if i not in at]
-    #%
     if len(end)!=len(start):
         if len(end)==len(start)*3:
             at=[]
@@ -913,9 +844,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     at.append(i)
                         #%
         if len(end)>2:
-#            at=[]
             end = [j for i, j in enumerate(end) if i not in at]
-                #%
         if len(start)==2:
             if len(end)>2 and len(end)>(len(start)*3-1):
                 endc.append(end[0])
@@ -935,7 +864,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     pass
             elif len(end)<4:
                 pass
-            #%
     if len(end)>len(start):
         if len(start)>1 and abs(end[1]-end[0])>7:
             end=end[0:-1]
@@ -948,10 +876,8 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 start.append(end[0])
             else:
                 start.append(int(len(dx)*0.98))
-        
         else:
             pass
-            #%
     if len(start)>4:        
         if end[0]-start[0]<4:
             if len(end)!=len(start):
@@ -960,7 +886,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
      #%
     if len(end)!=len(start):
         def test(end): 
-        #%     
             i=0
             au=[]
             for i in range(len(end)):
@@ -975,46 +900,33 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     #% The pandas are better to handle data (in functions) than list of lists (according to my experience):
         if end!=[]:
             end=test(end)
-            #%
         if len(start)>len(end) and len(end)>1 and len(start)>2 and start[1]<end[0]:
             end.append(start[1])
         end=np.sort(end)
         end=list(end)
-            #%
         if len(start)!=[] and len(end)!=[] and len(end)>0:
             if len(start)>len(end) and abs(int(len(dx)*0.98)-end[-1])>4:
                 end.append(int(len(dx)*0.98))
-        #%
         if len(start)==5 and len(end)==4 and start[2]<end[1] and end[-1]>110 and start[0]>22:
             end.append(start[2])
         end=np.sort(end)
         end=list(end)
-    #%
     if len(start)==len(end) and len(dx)>120 and len(end)>2 and end[-2]>start[-1] and start[0]>20 and abs(start[1]-end[0])<2:
         end.pop(-1)
         end.insert(-2,start[-1])
         end=np.sort(end)
-        end=list(end)
-        #%
-        
-        
-        
+        end=list(end)      
     if len(start)>len(end):
         if len(start)!=[] and len(end)!=[] and len(end)>0 and len(start)>1:
             if end[0]==start[1] or end[0]+1==start[1] or end[0]-1==start[1] or end[0]+2==start[1] or end[0]-2==start[1]:
                 start.pop(1)
-
     end=np.sort(end)
     end=list(end)
-    
     if len(end)>5 and len(start)==len(end) and len(dx)>175 and end[0]>start[1] and end[-2]>start[-1] and end[1]>start[2] and end[2]>start[3] and abs(end[-1]-end[-2])<12:
         end.insert(0,start[1])
         end.pop(-1)
-        #%
     end=np.sort(end)
     end=list(end)
-    
-    #%
     if len(start)>1 and len(end)>1:
         if start[1]<end[0] and len(start)>5:
             start[1]=end[0]
@@ -1023,7 +935,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         if end[1]==start[2] and len(start)>5 and abs(start[1]-start[2])<10 and end[0]<start[2]:
             start.pop(1)
             end.pop(1)
-    #%
     if len(end)<len(start):
         if len(start)!=[] and len(end)!=[] and len(end)>0 and len(start)>1:
             ex=[]
@@ -1035,8 +946,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     if max(sup)<len(dx):
                         end.append(max(sup))
                     elif max(sup)==len(dx):
-                        end.append(int(len(dx)*0.98))
-                        
+                        end.append(int(len(dx)*0.98))                      
                 elif sup==[]:
                     end.append(int(len(dx)*0.98))
             if len(end)<len(start):
@@ -1057,11 +967,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             end.append(start[3])
         if len(end)-1==len(start) and len(start)>4 and end[-2]>start[-1] and (start[1]+50)<end[1]:
             end=end[0:-1]
-            #%
     if len(end)>1 and len(start)>1:
         if abs(end[-1]-end[-2])<5:
             end=end[0:-1]
-
     aux2=[]
     a3=[]
     i=0
@@ -1072,11 +980,9 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     if end!=[]:
         a3.append(end[0])
     i=0
-
     for i in range(len(aux2)):
         if aux2[i]-aux2[i-1]>1:
             a3.append(end[aux2[i]])
-    #%
     if len(start)<len(end):
         if len(start)+1==3 and abs(end[1]-end[0])<8:
             if abs(end[1]-end[0])==7:
@@ -1100,7 +1006,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         elif len(start)==0:
             end.append(int(len(dx)*0.98))
             start.append(int(len(dx)*0.05))
-#%
     if len(end)!=len(start):
         if end!=[]:
             enda=[]
@@ -1115,7 +1020,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 end.append(enda)
             elif enda>int(len(dx)*0.9):
                 end.append(int(len(dx)*0.98))
-    #%
     peta=[]
     eta=[]
     x=[]
@@ -1128,13 +1032,11 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                         x.append(end[i]-end[i-1])
         if x!=[]:
             eta=int(np.average([np.median(x),np.max(x)/2])) 
-    
             del end[peta]          
             end.insert(peta, eta)
     if len(end)==len(start):
         end=np.sort(end)
     end=list(end)
-                #%
     apo=[]
     if len(start)>0:
         for i in range(len(start)):
@@ -1142,7 +1044,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
             if apo[i]>3 and 'Reviewer' in dx.iloc[start[i]] and apo[i]<7 or \
             len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[start[i]].split('Reviewer')[0]))))>3:
                 start[i]=start[i]+1
-                #%
     if end!=[] and start!=[] and len(end)>0 and len(start)>1:
         if len(end)==len(start) and len(start)>6:
             if abs(start[0]-start[1])<3 and abs(start[1]-start[2])<5: 
@@ -1150,7 +1051,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                     ok=start[0]
                     start=start[2:]
                     start[0]=ok
-#%
                 if end[0]==end[1] and abs(end[2]-end[1])>12:
                     end=end[1:-1]
     if len(end)>5 and len(start)>5:
@@ -1160,17 +1060,14 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         start=np.unique(start)
         start=np.sort(start)
         start=list(start)
-                    #%
     if start==[]:
         start.append(int(len(dx)/10))
     if end==[]:
         end.append(int(len(dx)-3))   
     def names(supass, xt='JOURNAL'):
-        #%
         supass2=[]
         for i in range(len(supass)):
             supass2.append(supass[i][1])
-
         def common_data(list1, list2): 
             result = []  
             # traverse in the 1st list 
@@ -1179,8 +1076,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 for y in list2:    
                     # if one common 
                     if abs(x-y)<3: 
-                        result.append(x)
-                          
+                        result.append(x)                     
             return result 
         #https://www.geeksforgeeks.org/python-check-two-lists-least-one-element-common/
         sn=[]
@@ -1193,16 +1089,13 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         if no!=[] or len(no)>0 and len(end)>0 or end!=0:
             for i in range(len(no)):
                 endax1.append(end.index(no[i]))
-                #%
         #The names    
         endax2=[]
         for i in range(len(sn)):
             endax2.append(end.index(sn[i]))
-        #%
         supass3=[[]]*len(end)
         for i in range(len(endax1)):
             supass3.insert(endax1[i],xt)
-        #%
         for i in range(len(endax2)):
             if len(endax2)==len(supass):
                 supass3.insert(endax2[i], supass[i][0])
@@ -1212,19 +1105,15 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 supass3.append(supass[i][0])
         if len(supass3)>len(end):
             supass3=supass3[0:len(end)]
-            #%
         return supass3
-#%
     if ssx==[]:
         Institution=   names(supass, xt='Journal Institution') 
     else:
         Institution=ssx
-    #%
     if ssy==[]:
         Title=   names(s4, xt='Journal Reviewer Title')
     else:
         Title=ssy
-    #%
     if sx==[]:
         Reviewer=names(supa, xt='Journal Reviewer')
     else:
@@ -1233,39 +1122,28 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     Article2 = Article * len(Reviewer)
     Designation=[]
     Designation = [xx] * len(Reviewer)
-#%
     io2=[]
     tot=[]
     tat=[]
-#    tit=[]
-#    tut=[]
     ras=[]
     rus=[]
-#    ris=[]
     res=[]
     if start==[]:
         start.append(int(len(dx)/10))
     if end==[]:
         end.append(int(len(dx)-3))
-        #%
     for i in range(len(start)):
         res=[]
         io2=list(tuple(range(start[i], end[i])))
-        #%
     #https://www.geeksforgeeks.org/python-program-to-count-words-in-a-sentence/     
     #https://stackoverflow.com/questions/44284297/python-regex-keep-alphanumeric-but-remove-numeric
     #%'https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7992 https://onlinelibrary.wiley.com/doi/full/10.1002/sim.7993'
         if start[0]!=0 and end[0]<6000 and len(end)==len(start):
             for i in io2:
-    #            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i]))))) # (?<![\"=\w])(?:[^\W_]+)(?![\"=\w])
                 res.append(len(dx.iloc[i].split(' ')))
                 ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', str(dx.iloc[i]))))
-    #            rus.append(len(re.findall(r'[0-9]+', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i])))))
-    #            ris.append(len(re.findall(r'(?=.*?[a-zA-Z].*?[a-zA-Z])', re.sub(r'\b[0-9]+\b', '', str(dx.iloc[i])))))
             tot.append(np.sum(res))
             tat.append(np.sum(ras))
-#        tit.append(np.sum(rus))
-#        tut.append(np.sum(ris))
         elif start[0]==0 and end[0]>6000:
             tot.append(0)
             tat.append(0)
@@ -1274,8 +1152,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
         for i in range(len(tat)-1):
             pat.append(tat[i+1]-tat[i])
         pat.insert(0,tat[0])
-        #%
-        
         for i in range(len(pat)):
             if pat[i]>199:
                 if pat[i]>422:
@@ -1293,17 +1169,14 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 pat[i]=np.median(pat)
             elif pat[i]<100 and pat[i]>49:
                 pat[i]=int(pat[i]/1.5)+np.median(pat)
-                #%
         for i in range(len(pat)):
-            pat[i]=int(pat[i])
-            
+            pat[i]=int(pat[i])            
         ko=[]
         ko.append(np.median(pat))  
         po=[]
         po.append(np.min(pat))
         no=[]
         no.append(np.max(pat))
-        #%
         if len(pat)>1 and len(tot)>1:
             if np.median(pat)<100:
                 for i in range(len(pat)):   
@@ -1317,16 +1190,10 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                                 pat[i]=ko*6
     for i in range(len(pat)):
         pat[i]=int(pat[i])
-            #%
-#    if pat!=[] and len(pat)==len(tot):
-#        for i in range(len(tot)):
-#            tot[i]=tot[i]+pat[i]
-            #%
     if len(Reviewer)-1==len(tot) and len(start)==len(tot):
         Reviewer=Reviewer[1:]
     elif len(Reviewer)+1==len(tot) and len(start)==len(tot):
-        Reviewer.insert(0,'Members of the committee')
-        
+        Reviewer.insert(0,'Members of the committee')        
     separate2=[]
     if tot==[]:
         tot.append('rev')
@@ -1339,7 +1206,6 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
     elif separate==[]:
         separate=['no']* len(Reviewer)
         separate2=separate
-        #%
     for i in range(len(tot)):
         tot[i]=int(tot[i])
         if pat[i]>4 and tot[i]>49 and tot[i]<3500 and pat!=[] and len(pat)==len(tot):
@@ -1349,28 +1215,7 @@ def words2(dx=dtok[0],xx=int(desig[0][1])): #the first zero in 'desig[0][0]' is 
                 tot[i]=tot[i]+int(pat[i]/60)+18
         elif pat[i]<4 and tot[i]>39:
             tot[i]=tot[i]+pat[i]
-                #%
-#    for i in range(len(tot)):
-#        tot[i]=int(tot[i])
-#        if tot[i]>=950:
-#            tot[i]=tot[i]-int(0.02*tot[i])-10
-#        tot[i]>=2500 and tot[i]<3300:
-#            if tot[i]==2542:
-#                tot[i]=tot[i]-int(int((tot[i]/2435-1)*tot[i]))+4
-#            elif tot[i]!=2542:
-#                tot[i]=tot[i]-int(0.044*tot[i])+40
-#        elif tot[i]>=1525 and tot[i]!=2435 and tot[i]<2500:
-#            tot[i]=tot[i]-int(0.045*tot[0])+10
-#        elif tot[i]>=1330 and tot[i]<1525:
-#            tot[i]=tot[i]-int(0.02*tot[0])-10
-#        elif tot[i]>=950 and tot[i]<1330:
-#            tot[i]=tot[i]-int(0.025*tot[0])
-#        elif tot[i]>3229 and tot[i]<4000:
-#            tot[i]=tot[i]-int(0.03*tot[i])
-            #% Members of the committee
 
-        
-        #%
     return tot, Reviewer, Title, Institution, Article2, Designation, separate2 
 #%Test:
 #Words, Reviewer, Title, Institution, Article2, Designation, separate=words2(dx=dtok[15],xx=int(desig[15][1]))
@@ -1403,7 +1248,6 @@ result = pd.concat(totaali)
 result.fillna(value=pd.np.nan, inplace=True)
 #%Replacing empty lists with nans:
 result=result.mask(result.applymap(str).eq('[]'))
-#%
 #https://stackoverflow.com/questions/43788826/replace-empty-list-values-in-pandas-dataframe-with-nan?rq=1
 #%Let's do the other way around i.e. add final_matrix to result, here are nan columns:
 result['Writers of Article'] = pd.DataFrame(index=range(len(result)),columns=range(1))
@@ -1431,11 +1275,9 @@ for i in range(len(final_matrix)):
         if final_matrix.index.tolist()[i]==int(result['Designation'].iloc[j]):
             result['Title of Article'].iloc[j]=final_matrix['Title of Article'].iloc[i]
             result['Page Count'].iloc[j]=final_matrix['Page Count'].iloc[i]
-#            result['Attachments'].iloc[j]=final_matrix['Attachments'].iloc[i]
 for i in range(len(final_matrix)):
     for j in range(len(result)):
         if final_matrix.index.tolist()[i] ==result['Designation'].iloc[j]:
-#            result['Title of Article'].iloc[j]=final_matrix['Title of Article'].iloc[i]
             result['Writers of Article'].iloc[j]=final_matrix['Writers of Article'].iloc[i]
             result['Date of Publication'].iloc[j]=final_matrix['Date of Publication'].iloc[i]
             result['Link to Publication'].iloc[j]=final_matrix['Link to Publication'].iloc[i]
@@ -1451,10 +1293,8 @@ for i in range(len(xa)):
 #1) It seems that link to pdf is not giving all the data, the articles etc. metadata are not refering to right review..   
 #%Let me first check the designation..:
 result=result.drop(columns=['Designation', 'Article Name'])           
-#result.rename(columns={'Article Name':'Title of Article'}, inplace=True) 
 result["Journal Name"]='BMJ' #if something is not available, mark it with 'nan'
 result["Reviewing Date"]='nan' #if something is not available..
-#%result["Link to All Reviews"]='nan'
 resulta=[]
 resulta=['Journal Name','Title of Article', \
                'Writers of Article', \
@@ -1469,7 +1309,6 @@ resulta=['Journal Name','Title of Article', \
                'Link to PDF of Review',\
                'Page Count',\
                'Attachments']
-#%
 df=[]
 df = result[resulta]  
 df=df.replace('x', 'nan') 
@@ -1497,8 +1336,6 @@ df=df.loc[df['Reviewer Name']!='nan']
 df["Link to PDF of Review"] = df["Link to PDF of Review"].astype(str)   
 df=df.loc[df['Link to PDF of Review']!='nan'] 
 df=df.loc[df["Reviewer Name"].drop_duplicates().index]
-#from itertools import groupby 
-#res = [i[0] for i in groupby(np.sort(df["Reviewer Name"]))] 
 #%IF some values are gray, convert them to string manually by clicking the table (with mouse)
 for i in range(len(df)):
     if ';' in df['Title of Article'].iloc[i]:
@@ -1509,13 +1346,10 @@ for i in range(len(df)):
 #%If something too much or little, you man need to have more here..
 #df=df.iloc[:,'Review Word Count']!='nan'
 #%Should you need to remove clearly wron values:
-        #%
 #df=df.loc[df.index!=244]
-        #%
 dtokz=pd.DataFrame(df)
 dtokz.to_csv('bmj_reviews2018_tikka16720_v1.csv',index=False)
 dtokz.to_excel("bmj_reviews2018_tikka16720_v1.xlsx") 
-#%
 #np.mean(dtokz['Review Word Count'])
 dfa2=dtokz
 aa=dfa2['Review Word Count']<26
@@ -1528,7 +1362,6 @@ dfa2=dfa2[dd]
 #dfa2=dfa2[dfa2['Review Word Count']!=0]
 #dfa2=dfa2[dfa2['Review Word Count']!=1]
 dfa2=dfa2[dfa2['Reviewer Name']!='Members of the committee']
-#%
 nn=[]
 for i in dfa2.index:
     if "['" in dfa2['Reviewer Name'][i]:
