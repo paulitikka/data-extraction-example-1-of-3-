@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 23 14:16:40 2020
+Created on Thu Jan 23 14:16:40 2020 (this version is 6.11.20 by Pauli Tikka)
 
 @author: pauli
 """
@@ -50,12 +50,13 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from selenium.webdriver.common.by import By
 import random
 import string
-#%%
-#%https://developers.google.com/edu/python/regular-expressions
-#https://docs.python.org/3/library/urllib.request.html
-#https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
+
 #%PLOS is missing quite many peer reviews (only 27 in 2020, so we need)
 #jan='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i01#Research_Article'
+#%Other info:
+#https://bmcmedicine.biomedcentral.com/articles?tab=keyword&searchType=journalSearch&sort=PubDateAscending&volume=17&page=1
+#https://developers.google.com/edu/python/regular-expressions
+#https://docs.python.org/3/library/urllib.request.html
 #%Let's try to get the first pdf automatically for BMJ, or use the below?, use the below if you can:
 #utest='https://www.bmj.com/archive/online/2020'
 #I need a list of the kind:
@@ -64,8 +65,6 @@ import string
 orig='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i'
 #a='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i01'
 #b='https://journals.plos.org/plosmedicine/issue?id=10.1371/issue.pmed.v16.i02'
-
-
 lista=[]
 aux=[]
 for i in range(0,12):
@@ -95,23 +94,17 @@ driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
 #WebDriverManager.chromedriver().setup()
 #%Ok, eli tässä on jo kaikki metadata..
 def get_months(aa):
-    #%
-#    aa=lista[9]
     driver.get(aa)
-    ax=[]
-    
+    ax=[]    
     login_form = driver.find_elements_by_xpath("//div[@class='section']")
-
     for i in range(len(login_form)):
         stra = str(login_form[i].text)
         if 'Research Articles\n' in stra:
             ax=login_form[i].text 
-
     if len(ax)==[]:
         ax.append('nan\n')
     oo=[]
     oo=ax.split("\n")
-    #%
     ntt=[]
     for i in range(len(oo)):
         stra = str(oo[i])
@@ -137,13 +130,11 @@ def get_months(aa):
     #%Selecting every third element
     #        https://stackoverflow.com/questions/1403674/pythonic-way-to-return-list-of-every-nth-item-in-a-larger-list
     article=ona[::3]
-    #%
     writer=ona[1:][::3]
     #%This works
     all_in_month=[]
     for i in range(len(link)):
         all_in_month.append([article[i], writer[i], date[i], link[i]])
-        #%
     return all_in_month    
 #%The work of the day is here: 
 #excalib=[]
@@ -156,28 +147,21 @@ def get_months(aa):
 #prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
 #options.add_experimental_option("prefs", prefs)
 #driver = webdriver.Chrome(executable_path='C:/Users/Pauli/Downloads/chromedriver.exe',options=options)
-#%
 #o1='https://journals.plos.org/plosmedicine/search?filterJournals=PLoSMedicine&filterStartDate=2020-03-25&filterEndDate=2020-04-24&q=publication_date%3A%5B2020-01-01T00%3A00%3A00Z+TO%202020-04-24T23%3A59%3A59Z%5D&sortOrder=DATE_NEWEST_FIRST&page=1'
 #    https://journals.plos.org/plosmedicine/search?filterJournals=PLoSMedicine&filterStartDate=2020-03-25&filterEndDate=2020-04-24&q=publication_date%3A%5B2020-01-01T00%3A00%3A00Z+TO%202020-04-24T23%3A59%3A59Z%5D&sortOrder=DATE_NEWEST_FIRST&page=2
 #o2='https://journals.plos.org/plosmedicine/search?filterJournals=PLoSMedicine&filterStartDate=2020-03-25&filterEndDate=2020-04-24&q=publication_date%3A%5B2020-01-01T00%3A00%3A00Z+TO%202020-04-24T23%3A59%3A59Z%5D&sortOrder=DATE_NEWEST_FIRST&page=2'
- 
-#%
 o1='https://journals.plos.org/plosmedicine/search?filterJournals=PLoSMedicine&filterArticleTypes=Research+Article&resultsPerPage=60&q=publication_date%3A%5B2020-01-01T00%3A00%3A00Z%20TO%202020-07-15T23%3A59%3A59Z%5D&page=1'
 o2='https://journals.plos.org/plosmedicine/search?filterJournals=PLoSMedicine&filterArticleTypes=Research+Article&resultsPerPage=60&q=publication_date%3A%5B2020-01-01T00%3A00%3A00Z%20TO%202020-07-15T23%3A59%3A59Z%5D&page=2'
 o_tot=[o1,o2] 
 #%
 def get_months2(aa):
-    #%
-#    aa=o_tot[0]
     driver.get(aa)
     #%sometimes loading takes more time than few second, so some wait is needed:
     time.sleep(20)
     artcilees = driver.find_elements_by_xpath("//dt/a[@href]")
-    #%
     namees= driver.find_elements_by_xpath("//dd/p[@class='search-results-authors']")
     datees= driver.find_elements_by_xpath("//dd/p/span[2]")
     linkiis= driver.find_elements_by_xpath("//dd/p[@class='search-results-doi']")
-    #%
     article=[] 
     writer=[] 
     date=[] 
@@ -202,14 +186,12 @@ def get_months2(aa):
 #tot=[]
 #for i in range(len(lista)):    
 #    tot.append(get_months(lista[i]))
-    #%
 tot=[]
 for i in range(len(o_tot)):    
     tot.append(get_months2(o_tot[i])) #It seems that it worked..
 #%Peer loop for the peer pdf:
 #def peer_loop2(total):
 #resulti = sum(tot, [])
-    #%
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 #bite, you need the news ChromeDriver!!
@@ -220,7 +202,6 @@ options.add_argument("--headless")
 prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
-#%
 #tot2=[]
 #tot2=result   
 #for i in range(len(result)):
@@ -239,7 +220,6 @@ driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
 #            result[i].append(ag2)
 #    else:
 #        result[i].append('nan')
-#%
 tot2=[]
 tot2=tot   
 for i in range(len(tot2)):
@@ -271,12 +251,10 @@ for i in range(len(tot2)):
 ##    for j in range(len(tot2[i])):
 #    if result[i][4]!='nan':
 #        sync2.append([i,j])
-#            #%
 #i=0
 #syna=[]        
 #for i in range(len(sync2)):
 #    syna.append(tot2[sync2[i][0]][4])
-
 sync=[]
 sync2=[]
 i=0
@@ -285,7 +263,6 @@ for i in range(len(tot2)):
     for j in range(len(tot2[i])):
         if tot2[i][j][4]!='nan':
             sync2.append([i,j])
-            #%
 i=0
 syna=[]        
 for i in range(len(sync2)):
@@ -294,7 +271,6 @@ for i in range(len(sync2)):
 for i in range(len(tot2)):
     for j in range(len(tot2[i])):
             tot2[i][j].append([])
-            #%
 for i in range(len(sync2)):
     if sync2[i][0]==0:
         tot2[0][sync2[i][1]][4]=syna[i]
@@ -313,13 +289,10 @@ df.to_csv("plos_review_links_2020ok_1720tikkav1.csv", sep=',',index=False)
 #prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
 #options.add_experimental_option("prefs", prefs)
 #driver = webdriver.Chrome(executable_path='C:/Users/Pauli/Downloads/chromedriver.exe',options=options)
-#%
 i=0
 j=0
 nanat=[]
-#%
 n3=[]
-#%
 options = Options()
 options.add_argument("--headless")
 prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
@@ -328,7 +301,6 @@ driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
 #driver = webdriver.Chrome(executable_path='C:/Users/Pauli/Downloads/chromedriver.exe',options=options)
 #for some reason sometimes the button.clikc does not always work, and need to redo for some places?
 for i in range(len(syna)):
-
         options = Options()
         options.add_argument("--headless")
         prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size': 4096}
@@ -388,8 +360,7 @@ nana=tax
 #    #https://stackoverflow.com/questions/13169725/how-to-convert-a-string-that-has-newline-characters-in-it-into-a-list-in-python
 #    #https://stackoverflow.com/questions/4842956/python-how-to-remove-empty-lists-from-a-list
 #    #https://www.geeksforgeeks.org/list-methods-in-python-set-2-del-remove-sort-insert-pop-extend/
-#%%
-     
+#%% 
 l=[]
 for i in range(len(nana)):
     for j in range(len(nana[i])):
@@ -400,13 +371,9 @@ for i in range(len(nana)):
 #%           "The impact of duration of diabetes on remission rates after bariatric surgery" (PMEDICINE-D-19-02752) for consideration at PLOS Medicine.
 #Homogeneity in the association of body mass index with type 2 diabetes across the UK Biobank: A Mendelian randomization study
 #%Once you have the dataframe well extracted, the below function it should work:
-    #
 #nana=nana[1:41]
-
     #%%
 def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the variable
-    
-    #%
     start=[]
     end=[]
     res=[]
@@ -414,7 +381,6 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
 #    dx=pd.DataFrame(nana[40])
 #    email=['See attachment']
     appendix=[]
-
     for i in range(0, len(dx)):
         stra = str(dx.iloc[i])
         match1 = bool(re.search(r'Requests from the editors:', stra)) #I need to change these values..       
@@ -425,16 +391,11 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
         elif match2==True:
             start.append(i)
         elif match3==True:
-            start.append(i)
-            
+            start.append(i)          
         if 'Any attachments provided with reviews can be' in stra:
             end.append(i)
         if 'See attachment' in stra:
             appendix.append(i)
-#        for x in range(len(email)):
-#            if email[x] in stra:
-#                appendix.append(i)
-#%
     if end==[] or len(end)==1:
         end=start[1:]
         end.append(int(len(dx)*0.98))
@@ -449,36 +410,7 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
         abs(start[-2]-start[-1])<2 and start[-1]==end[-2]:
             end.pop(-2)
             start.pop(-2)
-            
-            
-            
-        #%
-#    for i in len(appendix):
-#        if abs(appendix[i]-end[j])<3:
-    
-#    def test(end): 
-#    #%     
-#        i=0
-#        au=[]
-#        for i in range(len(end)):
-#            if end[i]-end[i-1]>3:
-#                au.append(end[i])
-#        enda=[]
-#        enda=end[0]
-#        au.insert(0,enda)
 #    #    https://developers.google.com/edu/python/lists
-#        end=au
-#        return end
-#    
-#    end=test(end)
-#    #%
-#    i=0
-#    at=[]
-#    for i in range(len(start)):
-#        if abs(start[i]-start[i-1])<3:
-#            at.append(i)
-#    start = [j for i, j in enumerate(start) if i not in at]
-    #%
 #    https://stackoverflow.com/questions/627435/how-to-remove-an-element-from-a-list-by-index        
 #%here are the exceptions
     #%
@@ -488,15 +420,6 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
         end.insert(0, ex)
         if end[-1]==len(dx):
             end.pop(-1)
-#            if len(end)<len(start):
-#            if sup!=[]:
-#                if max(sup)<len(dx):
-#                    end.append(max(sup))
-#                elif max(sup)==len(dx):
-#                    end.append(int(len(dx)*0.95))
-#                    
-#            elif sup==[]:
-#                end.append(int(len(dx)*0.95))
         if len(end)<len(start):
             enda=[]
             enda=end[-1]
@@ -514,7 +437,6 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
                 aux2.append(i-1)
     a3.append(end[0])
     i=0
-#%
     for i in range(len(aux2)):
         if aux2[i]-aux2[i-1]>1:
             a3.append(end[aux2[i]])
@@ -534,11 +456,6 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
         enda=[]
         enda=end[-1]
         end=start[1:]
-#        if sup!=[]:
-#            if max(sup)<len(dx):
-#                end.append(max(sup))
-#        elif sup==[]:
-#            end.append(int(len(dx)*0.95))
         if enda<int(len(dx)*0.99):
             end.append(enda)
         elif enda>int(len(dx)*0.9):
@@ -558,8 +475,7 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
             eta=int(np.average([np.median(x),np.max(x)/2])) 
     
             del end[peta]          #need to delete too high values
-            end.insert(peta, eta)
-       #%       
+            end.insert(peta, eta)    
     tot=[]
     pat=[]
     io2=[]
@@ -580,27 +496,12 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
         for i in io2:
 #            print(i)
             stra = (dx.iloc[i])[0]
-#            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', stra))))
-#            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[6]))))
             res.append(len(stra.split(' ')))
-#            res.append(len(re.findall(r'\w+', re.sub(r'\b[0-9]+\b', '', df2.iloc[3]))))
             ras.append(len(re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', stra)))
-            
-#%
-#stra = (dx.iloc[39])[0]
-##%%
-#sum([i.strip(string.punctuation).isalpha() for i in stra).split()])
-##%%
-#re.sub('['+string.punctuation+']', '', str(dx.iloc[39])).split()
-#%
         tot.append(np.sum(res))
         pat.append(np.sum(ras))
-        #%
     if tot==[]:
         tot.append(0)
-
-
-            #%
     for i in range(len(pat)):
         if pat[i]>199:
             if pat[i]>422:
@@ -618,17 +519,14 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
             pat[i]=np.median(pat)
         elif pat[i]<100 and pat[i]>49:
             pat[i]=int(pat[i]/2)+np.median(pat)
-            #%
     for i in range(len(pat)):
-        pat[i]=int(pat[i])
-            
+        pat[i]=int(pat[i])           
     ko=[]
     ko.append(np.median(pat))  
     po=[]
     po.append(np.min(pat))
     no=[]
     no.append(np.max(pat))
-    #%
     if len(pat)>1 and len(tot)>1:
         if np.median(pat)<100:
             for i in range(len(pat)):   
@@ -640,11 +538,9 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
                     elif len(pat)<3 or len(pat)>6:
                         if pat[i]>365:
                             pat[i]=ko*6
-                            #%
                 elif pat[i]==po[0]:
                     if pat[i]<4:
                         pass
-                    #%
                     elif pat[i]>3:
                         pat[i]=abs(int(pat[i]-po[0]/1.3))
                         #
@@ -654,25 +550,7 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
     if pat!=[] and len(pat)==len(tot):
         for i in range(len(tot)):
             tot[i]=tot[i]+pat[i]
-            #%
-#    for i in range(len(tot)):
-#        tot[i]=int(tot[i])
-#        if tot[i]>=2500 and tot[i]<3300:
-#            if tot[i]==2542:
-#                tot[i]=tot[i]-int(int((tot[i]/2435-1)*tot[i]))+4
-#            elif tot[i]!=2542:
-#                tot[i]=tot[i]-int(0.044*tot[i])+40
-#        elif tot[i]>=1525 and tot[i]!=2435 and tot[i]<2500:
-#            tot[i]=tot[i]-int(0.045*tot[0])+10
-#        elif tot[i]>=1330 and tot[i]<1525:
-#            tot[i]=tot[i]-int(0.02*tot[0])-10
-#        elif tot[i]>=950 and tot[i]<1330:
-#            tot[i]=tot[i]-int(0.025*tot[0])
-#        elif tot[i]>3229 and tot[i]<4000:
-#            tot[i]=tot[i]-int(0.03*tot[i])
     separate2=[]
-#    if tot==[]:
-#        tot.append('rev')
     if appendix!=[]:
         separate2=['no']* len(tot)
         for i in range(len(tot)):
@@ -684,20 +562,16 @@ def words3(dx=pd.DataFrame(nana[0])): #the first zero in 'desig[0][0]' is the va
     for i in range(len(separate2)):
         if separate2[i]!='no':
             separate2[i]='attached'
-        #%
     return tot, separate2
-#, appendix  
 #%Test:
 #Words4=words3(dx=pd.DataFrame(nana[4]))
 #%Got it, the amount of words in peer reviews about ok:
 #nana2=nana[1:41]
 #sync3=sync2[1:41]
-#%
 appen=[]
 test_short=[]   
 for i in range(len(nana)): 
     test_short.append(words3(dx=pd.DataFrame(nana[i]))[0])
-    #%
     appen.append(words3(dx=pd.DataFrame(nana[i]))[1])
     #got some value, but checking.. now about
 #%ok..
@@ -709,7 +583,6 @@ tt=[]
 for i in range(len(test_short2)):
     tt.append(list(test_short2[i]))
 #%I need the word count values tot2..
-#%
 tot3=[]
 tot3=tot2    
 for i in range(len(tot2)):
@@ -734,7 +607,6 @@ for i in range(len(sync2)):
 #for i in range(len(sync2)):
 #    if sync2[i][0]==0:
 #        tot3[0][sync2[i][1]][5]=test_short[i]                
-#%
 #for i in range(len(tot3)):
 #    for j in range(len(tot3[i])):
 #        if tot3[i][j][4]==0:
@@ -745,21 +617,16 @@ for i in range(len(sync2)):
 #for i in range(len(sync2)):
 #    tot3[sync2[i][0]][sync2[i][1]][5]=test_short[i]
 #    tot3[sync2[i][0]][sync2[i][1]][6]=appen[i]
-
-    #%
 def panda(a):   
     panda1=[]
     panda1=pd.DataFrame(a, index=['Article', 'Names', 'Date', 'Original link', 'Review link','Words', 'Appendix'])
     panda1=panda1.T
     return panda1
-#%
 #iloa=panda(tot3[0][0])   
-    #%
 totaali=[]
 for i in range(len(tot3)):
     for j in range(len(tot3[i])):
         totaali.append(panda(tot3[i][j]))
-    #%
 result=[]
 result = pd.concat(totaali) #this is partly ok..
 #%It would be better to have the numbers in all separate columns
@@ -768,13 +635,11 @@ dipadapa=[]
 for i in range(len(result)):
     if result['Words'].iloc[i]!=0 and result['Words'].iloc[i]!=[]:
         dipadapa.append(len(result['Words'].iloc[i]))
-#%
 #https://thispointer.com/python-pandas-how-to-add-new-columns-in-a-dataframe-using-or-dataframe-assign/
 #result[['Words1','Words2','Words3','Words4']] = pd.DataFrame(index=range(len(result)),columns=range(4))
 #https://stackoverflow.com/questions/39050539/adding-multiple-columns-to-pandas-simultaneously
 #https://stackoverflow.com/questions/20490274/how-to-reset-index-in-a-pandas-dataframe
 #result = result.reset_index(drop=True)
-        #%
 new=[]
 new=pd.DataFrame(index=range(np.sum(dipadapa)),columns=range(14))
 tot_counta=['Journal Name','Title of Article', \
@@ -799,33 +664,24 @@ for i in range(len(result)):
         pass
 result=result.drop(daapa,axis=0)
 result = result.reset_index(drop=True)
-#%
 tat=[]
 tit=[]
 for i in range(len(result)):
     tat.append(list(result['Words'].iloc[i]))
     tit.append(list(result['Appendix'].iloc[i]))
-    #%
 laxi=[]
 laxi=pd.DataFrame(tat) 
-#%
 #for i in range(len(tat)):
 #    laxi.append(pd.concat(tat[i], axis=1))
-    #%
 laxi = laxi.astype(str)   
-#%
 laxi=laxi[laxi[0]!='nan']
-#%
 laxi = laxi.astype(float) 
-#%
 dda=[]
 for i in range(len(laxi)):
     dda.append(laxi.iloc[i][laxi.iloc[i].astype(str)!='nan'])
 dada=pd.concat(dda) 
-#%
 lax=[]
 lax=pd.DataFrame(tit) 
-#%
 lax = lax.astype(str)   
 lax=lax[laxi[0]!='nan']
 #lax = lax.astype(float) 
@@ -833,36 +689,28 @@ ddn=[]
 for i in range(len(lax)):
     ddn.append(lax.iloc[i][lax.iloc[i].astype(str)!='None'])
 dadan=pd.concat(ddn) 
-#%
 #result['Words'] = result['Words'].astype(int) 
-#%
 #result=result.loc[result['Words'].loc[i]!=[],:]
 result['Words'] = result['Words'].astype(str) 
 result=result[result['Words']!='[]']
 #result['Words'] = result['Words'].astype(int) 
-#%
 cax=[]
 for i in range(len(result)):
     cax.append(pd.concat([result.iloc[i,0:6]]*dipadapa[i], axis=1).T)
 #https://stackoverflow.com/questions/23887881/how-to-repeat-pandas-data-frame
-#%
 naxi=pd.concat(cax)  
-#%
 naxi=naxi.reset_index(drop=True)
 dada=dada.reset_index(drop=True)
 dadan=dadan.reset_index(drop=True)
 naxi['Words']= dada
 naxi['Appendix']= dadan
-#%
 #import itertools
 #b=list(itertools.chain.from_iterable(result.loc[:,5]))
-#%
 #%b=list(itertools.chain.from_iterable(list(result.ix[0:39,5])))
 #c=pd.DataFrame(b)
 new['Review Word Count']=naxi.iloc[:,5]
 #new['Review Word Count']=naxi.iloc[:,5]
 #new['Review Word Count']=dada
-#%
 naxi = naxi.reset_index(drop=True)
 new['Title of Article']=naxi.iloc[:,0]
 new['Writers of Article']=naxi.iloc[:,1]
@@ -872,7 +720,6 @@ new['Link to All Reviews']=naxi.iloc[:,4]
 new['Journal Name']='PLOS Medicine'
 new['Attachments']=naxi.iloc[:,6]
 new['Page Count']='nan'
-#%
 #result=result.fillna(0)  
 ##For this matrix, these are not necessary:
 ##https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html 
@@ -882,7 +729,6 @@ new['Page Count']='nan'
 #%https://stackoverflow.com/questions/43788826/replace-empty-list-values-in-pandas-dataframe-with-nan?rq=1
 ##https://stackoverflow.com/questions/45473330/creating-a-pandas-data-frame-of-a-specific-size
 dtokza=pd.DataFrame(new)
-#%
 dfa2=dtokza
 aa=dfa2['Review Word Count']<26
 bb=dfa2['Attachments']=='attached'
@@ -894,7 +740,6 @@ dfa2=dfa2[dd]
 #dfa2=dfa2[dfa2['Review Word Count']!=0]
 #dfa2=dfa2[dfa2['Review Word Count']!=1]
 #dfa2=dfa2[dfa2['Reviewer Name']!='Members of the committee']
-#%
 #nn=[]
 #for i in dfa2.index:
 #    if "['" in dfa2['Reviewer Name'][i]:
@@ -907,7 +752,6 @@ dfa2=dfa2[dd]
 #li2 = nn
 #ok=Diff(li1, li2)
 #dfa2=dfa2.loc[ok]
-#%
 dfa2.to_csv('plos_reviews_2020_15720tikka_v1.csv', index=False)
 #%%
 dfa2.to_csv('plos_reviews_2020_15720tikka_v2.csv', index=False)
